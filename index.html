@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K7UAZ Picoballoon | Home</title>
+    <meta
+      name="description"
+      content="K7UAZ Picoballoon project sponsored by ARRL, with student-led flight engineering, live tracking, and mission reports."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="layout nav">
+        <a class="brand" href="index.html">K7UAZ <span>Picoballoon</span></a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu">Menu</button>
+        <nav id="menu" class="nav-menu" data-menu>
+          <a href="index.html" data-nav>Home</a>
+          <a href="hardware.html" data-nav>Hardware</a>
+          <a href="teams.html" data-nav>Teams</a>
+          <a href="schedule.html" data-nav>Schedule</a>
+          <a href="club.html" data-nav>K7UAZ Club</a>
+          <a href="flights.html" data-nav>Flights</a>
+          <a href="tracking.html" data-nav>Track Live</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="layout hero-grid reveal">
+          <div>
+            <p class="eyebrow">K7UAZ Picoballoon Project</p>
+            <h1>Around the World in Less Than 80 Days.</h1>
+            <p>
+              Student teams are launching a picoballoon with a WSPR Pico transmitter to pursue long-duration global
+              tracking while advancing flight systems, amateur radio operations, and mission engineering discipline.
+            </p>
+            <div class="hero-callout">
+              <strong>Primary Sponsor: ARRL, The National Association for Amateur Radio</strong>
+              <p>ARRL mission: advance the art, science, and enjoyment of Amateur Radio.</p>
+            </div>
+            <div class="button-row">
+              <a class="button" href="teams.html">Join a Team</a>
+              <a class="button button-ghost" href="tracking.html">Track our Balloon</a>
+              <a class="button button-ghost" href="flights.html">View Flight Reports</a>
+            </div>
+            <div class="badge-grid">
+              <div class="stat-badge">
+                <div class="stat-value" id="stat-flights">0</div>
+                <div class="stat-label">Flights launched</div>
+              </div>
+              <div class="stat-badge">
+                <div class="stat-value" id="stat-altitude">0 m</div>
+                <div class="stat-label">Max altitude</div>
+              </div>
+              <div class="stat-badge">
+                <div class="stat-value" id="stat-duration">0.0 h</div>
+                <div class="stat-label">Longest track time</div>
+              </div>
+            </div>
+          </div>
+          <figure class="hero-image">
+            <img src="pictures/stratocat02.png" alt="K7UAZ picoballoon mission artwork" />
+            <figcaption>K7UAZ campaign artwork for the current mission cycle.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout info-grid reveal">
+          <article class="card">
+            <strong>Project Goal</strong>
+            <p>
+              Build a repeatable student mission architecture for global-scale picoballoon tracking using WSPR telemetry,
+              reliable power, and well-documented launch operations.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Current Mission Status</strong>
+            <p>
+              Mission 2 is in prep now with launch weekend targeted for <span data-next-launch-label>Saturday, February 28, 2026</span>.
+            </p>
+            <div class="button-row">
+              <a class="button button-ghost" href="countdown.html">Open Mission Countdown</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="flight-reports">
+        <div class="layout reveal">
+          <p class="eyebrow">Featured Flights</p>
+          <h2 class="section-title">Design A, B, and C mission progression</h2>
+          <p class="section-intro">
+            Flight reports include mission metrics, hardware changes, and lessons learned so sponsors and members can
+            track technical maturity.
+          </p>
+          <div class="flight-grid" data-mission-cards="home"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="layout">
+        <p><strong>K7UAZ Picoballoon</strong> student mission program for engineering and amateur radio.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+    <script src="assets/js/mission-data.js"></script>
+    <script src="assets/js/components.js"></script>
+  </body>
+</html>

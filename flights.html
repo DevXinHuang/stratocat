@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K7UAZ Picoballoon | Flights</title>
+    <meta
+      name="description"
+      content="Flight reports for K7UAZ Picoballoon missions with metrics, mission badges, and lessons learned."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="layout nav">
+        <a class="brand" href="index.html">K7UAZ <span>Picoballoon</span></a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu">Menu</button>
+        <nav id="menu" class="nav-menu" data-menu>
+          <a href="index.html" data-nav>Home</a>
+          <a href="hardware.html" data-nav>Hardware</a>
+          <a href="teams.html" data-nav>Teams</a>
+          <a href="schedule.html" data-nav>Schedule</a>
+          <a href="club.html" data-nav>K7UAZ Club</a>
+          <a href="flights.html" data-nav>Flights</a>
+          <a href="tracking.html" data-nav>Track Live</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="layout reveal">
+          <p class="eyebrow">Flight Reports</p>
+          <h1>Mission storytelling with data, failures, and fixes.</h1>
+          <p>
+            Each design flight includes launch context, telemetry metrics, recovery outcome, and concise postmortems to
+            guide the next build.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="layout reveal">
+          <h2 class="section-title">Design Flights</h2>
+          <p class="section-intro">
+            Mission badges are loaded directly from <code>/pictures</code>. Replace image files there to keep cards up to
+            date.
+          </p>
+          <div class="flight-grid" data-mission-cards="flights"></div>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout reveal">
+          <h2 class="section-title">Design Comparison Table</h2>
+          <p class="section-intro">A/B/C side-by-side engineering comparison for mass, power, telemetry, runtime, and failure modes.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Flight Design</th>
+                  <th scope="col">Mass</th>
+                  <th scope="col">Power (avg/peak)</th>
+                  <th scope="col">Comms Mode</th>
+                  <th scope="col">Antenna Type</th>
+                  <th scope="col">Estimated Runtime</th>
+                  <th scope="col">Max Altitude</th>
+                  <th scope="col">Biggest Failure Mode / Fix</th>
+                </tr>
+              </thead>
+              <tbody id="comparison-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout soft-panel reveal">
+          <strong>Timeline</strong>
+          <p>Sep 2025 to Feb 2026: Iteration A -> B -> C. Mission 2 launch window is <span data-next-launch-label></span>.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="layout">
+        <p><strong>K7UAZ Picoballoon</strong> mission archive.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+    <script src="assets/js/mission-data.js"></script>
+    <script src="assets/js/components.js"></script>
+  </body>
+</html>

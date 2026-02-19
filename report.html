@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K7UAZ Picoballoon | Flight Report</title>
+    <meta
+      name="description"
+      content="Reusable flight report page for K7UAZ Picoballoon missions with metrics, architecture, and lessons learned."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="layout nav">
+        <a class="brand" href="index.html">K7UAZ <span>Picoballoon</span></a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu">Menu</button>
+        <nav id="menu" class="nav-menu" data-menu>
+          <a href="index.html" data-nav>Home</a>
+          <a href="hardware.html" data-nav>Hardware</a>
+          <a href="teams.html" data-nav>Teams</a>
+          <a href="schedule.html" data-nav>Schedule</a>
+          <a href="club.html" data-nav>K7UAZ Club</a>
+          <a href="flights.html" data-nav>Flights</a>
+          <a href="tracking.html" data-nav>Track Live</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="report-shell" data-report-page>
+      <div class="layout reveal">
+        <div class="report-header">
+          <article class="card">
+            <p class="eyebrow">Flight Report</p>
+            <h1 id="report-title">Mission Report</h1>
+            <p class="report-meta" id="report-subtitle"></p>
+            <div class="button-row">
+              <span id="report-status" class="status-pill">Status</span>
+              <a class="button button-ghost" id="report-link" href="#" target="_blank" rel="noreferrer">Tracking link</a>
+            </div>
+          </article>
+          <article class="card">
+            <p id="report-intro"></p>
+            <div class="metric-grid compact" id="report-metrics"></div>
+          </article>
+        </div>
+
+        <div class="report-sections">
+          <article class="card">
+            <h2>Mission Overview</h2>
+            <ul id="report-mission-overview"></ul>
+          </article>
+          <article class="card">
+            <h2>Payload Architecture</h2>
+            <ul id="report-architecture"></ul>
+          </article>
+          <article class="card">
+            <h2>Ground Station &amp; Decoding</h2>
+            <ul id="report-ground"></ul>
+          </article>
+          <article class="card">
+            <h2>Power &amp; Thermal</h2>
+            <ul id="report-power"></ul>
+          </article>
+          <article class="card">
+            <h2>Operations Checklist</h2>
+            <ul id="report-ops"></ul>
+          </article>
+          <article class="card">
+            <h2>Results</h2>
+            <ul id="report-results"></ul>
+          </article>
+          <article class="card">
+            <h2>Lessons Learned</h2>
+            <ul id="report-lessons"></ul>
+          </article>
+          <article class="card">
+            <h2>Roadmap</h2>
+            <ul id="report-roadmap"></ul>
+          </article>
+        </div>
+
+        <section class="section-tight">
+          <h2 class="section-title">Mission Gallery</h2>
+          <div class="report-gallery" id="report-gallery"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="layout">
+        <p><strong>K7UAZ Picoballoon</strong> reusable flight report.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+    <script src="assets/js/mission-data.js"></script>
+    <script src="assets/js/components.js"></script>
+  </body>
+</html>

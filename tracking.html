@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K7UAZ Picoballoon | Live Tracking</title>
+    <meta
+      name="description"
+      content="Live and historical tracking dashboards for K7UAZ Picoballoon launches, with how-to-follow instructions."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="layout nav">
+        <a class="brand" href="index.html">K7UAZ <span>Picoballoon</span></a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu">Menu</button>
+        <nav id="menu" class="nav-menu" data-menu>
+          <a href="index.html" data-nav>Home</a>
+          <a href="hardware.html" data-nav>Hardware</a>
+          <a href="teams.html" data-nav>Teams</a>
+          <a href="schedule.html" data-nav>Schedule</a>
+          <a href="club.html" data-nav>K7UAZ Club</a>
+          <a href="flights.html" data-nav>Flights</a>
+          <a href="tracking.html" data-nav>Track Live</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="layout reveal">
+          <p class="eyebrow">Live / Tracking</p>
+          <h1>Mission dashboards and follow guide.</h1>
+          <p>
+            Embedded views are provided below. If your browser blocks embeds, use the direct links under each panel.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout info-grid reveal">
+          <article class="card">
+            <strong>Latest Flight Status</strong>
+            <p>Mission 2 launch weekend target: <span data-next-launch-label></span>.</p>
+          </article>
+          <article class="card">
+            <strong>How to follow a flight</strong>
+            <p>Open dashboard, confirm callsign/channel, monitor spot cadence, and log major events in UTC.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="layout embed-grid reveal">
+          <article class="card embed-card">
+            <p class="eyebrow">Launch Example 1</p>
+            <h3>K7UAZ - 20m channel 39</h3>
+            <p>First mission example dashboard.</p>
+            <iframe
+              class="embed-frame"
+              title="K7UAZ Traquito dashboard"
+              src="https://traquito.github.io/search/spots/dashboard/?band=20m&channel=39&callsign=K7UAZ&dtGte=2025-11-01"
+              loading="lazy"
+            ></iframe>
+            <div class="button-row">
+              <a
+                class="button button-ghost"
+                href="https://traquito.github.io/search/spots/dashboard/?band=20m&channel=39&callsign=K7UAZ&dtGte=2025-11-01"
+                target="_blank"
+                rel="noreferrer"
+                >Open in new tab</a
+              >
+            </div>
+          </article>
+
+          <article class="card embed-card">
+            <p class="eyebrow">Launch 1.5 with Brendon</p>
+            <h3>KC5VCW - 20m channel 150</h3>
+            <p>Community-supported mission tracking view.</p>
+            <iframe
+              class="embed-frame"
+              title="KC5VCW Traquito dashboard"
+              src="https://traquito.github.io/search/spots/dashboard/?band=20m&channel=150&callsign=KC5VCW&dtGte=2026-01-01"
+              loading="lazy"
+            ></iframe>
+            <div class="button-row">
+              <a
+                class="button button-ghost"
+                href="https://traquito.github.io/search/spots/dashboard/?band=20m&channel=150&callsign=KC5VCW&dtGte=2026-01-01"
+                target="_blank"
+                rel="noreferrer"
+                >Open in new tab</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="layout">
+        <p><strong>K7UAZ Picoballoon</strong> live tracking portal.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+    <script src="assets/js/mission-data.js"></script>
+    <script src="assets/js/components.js"></script>
+  </body>
+</html>

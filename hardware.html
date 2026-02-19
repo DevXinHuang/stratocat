@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K7UAZ Picoballoon | About the Hardware</title>
+    <meta
+      name="description"
+      content="Hardware architecture for the K7UAZ Picoballoon mission including WSPR Pico, GPS, solar, antenna, and balloon systems."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="layout nav">
+        <a class="brand" href="index.html">K7UAZ <span>Picoballoon</span></a>
+        <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu">Menu</button>
+        <nav id="menu" class="nav-menu" data-menu>
+          <a href="index.html" data-nav>Home</a>
+          <a href="hardware.html" data-nav>Hardware</a>
+          <a href="teams.html" data-nav>Teams</a>
+          <a href="schedule.html" data-nav>Schedule</a>
+          <a href="club.html" data-nav>K7UAZ Club</a>
+          <a href="flights.html" data-nav>Flights</a>
+          <a href="tracking.html" data-nav>Track Live</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="layout reveal">
+          <p class="eyebrow">About the Hardware</p>
+          <h1>Flight electronics and envelope system for stratospheric endurance.</h1>
+          <p>
+            The vehicle stack is built around low-mass telemetry, fragile solar power surfaces, and a flight envelope process
+            tuned for reliability before launch day.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout split reveal">
+          <article class="card">
+            <h3>Tracker Hardware</h3>
+            <ul>
+              <li>Core system: Raspberry Pi Pico with configurable WSPR messages.</li>
+              <li>Firmware controls transmit band and slot assignments for each mission profile.</li>
+              <li>Hardware state is validated during preflight checkout and launch rehearsal.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Navigation and Power</h3>
+            <ul>
+              <li>Ublox GPS receiver provides positional and timing data for telemetry packets.</li>
+              <li>Power architecture uses fragile bare solar cells with lightweight interconnect handling.</li>
+              <li>Power continuity is tracked through cold weather and low-sun-angle conditions.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Antenna System</h3>
+            <ul>
+              <li>The physical tether is used as half of the antenna system.</li>
+              <li>Trade studies and VNA measurements guide tuning across expected flight conditions.</li>
+              <li>Antenna routing is coordinated with structure and insulation to reduce detuning risk.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Balloon Envelope</h3>
+            <ul>
+              <li>Conditioned Chinese Mylar balloon envelope is used for flight readiness.</li>
+              <li>Envelope is pressurized with humid air to stretch material and check for leaks.</li>
+              <li>Leak test outcomes inform final go/no-go decision before filling and launch.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Lifting Gas Transition</h3>
+            <ul>
+              <li>Program is migrating from a low-lift Helium/Air mixture to pure Hydrogen.</li>
+              <li>Transition is managed with additional safety procedures and operations review.</li>
+              <li>Flight dynamics assumptions are updated for higher-lift profiles.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Hardware Visuals</h3>
+            <p>
+              Current campaign imagery is shown below while the team continues publishing close-up payload, solar, and antenna
+              build photography.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout split reveal">
+          <figure class="hardware-visual card">
+            <img src="pictures/stratocat01.png" alt="Mission 1 campaign visual" />
+            <figcaption>Mission 1 campaign visual from the K7UAZ build and launch archive.</figcaption>
+          </figure>
+          <figure class="hardware-visual card">
+            <img src="pictures/stratocat02.png" alt="Mission 2 campaign visual" />
+            <figcaption>Mission 2 campaign visual used in operations and outreach materials.</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="layout">
+        <p><strong>K7UAZ Picoballoon</strong> hardware and envelope engineering documentation.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+  </body>
+</html>
