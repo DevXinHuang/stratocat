@@ -25,3 +25,14 @@ Update mission content in `assets/js/mission-data.js`.
 ## Assets
 
 Mission images are stored in `pictures/`.
+
+## Deployment (GitHub Actions)
+
+This repo uses the workflow in `.github/workflows/deploy-pages.yml` to deploy GitHub Pages.
+
+In GitHub:
+
+1. Go to `Settings` -> `Pages`
+2. Set `Source` to `GitHub Actions`
+
+After that, every push to `main` auto-deploys the site.
