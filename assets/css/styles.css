@@ -141,6 +141,53 @@ code {
   color: var(--accent);
 }
 
+.launch-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: -0.45rem;
+  padding: 0.36rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(171, 5, 32, 0.16), var(--surface-soft));
+  box-shadow: 0 10px 24px rgba(12, 35, 75, 0.16);
+  white-space: nowrap;
+}
+
+.launch-chip-dot {
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(171, 5, 32, 0.55);
+  animation: chipPulse 2s ease-in-out infinite;
+}
+
+.launch-chip-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.launch-chip-value {
+  font-family: "Space Mono", monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.launch-chip.launch-live {
+  border-color: var(--accent);
+  background: linear-gradient(120deg, rgba(171, 5, 32, 0.25), var(--surface-soft));
+}
+
+.launch-chip.launch-live .launch-chip-value {
+  color: var(--accent);
+}
+
 .nav-menu {
   display: flex;
   flex-wrap: wrap;
@@ -855,7 +902,23 @@ tbody tr:last-child th {
   }
 }
 
+@keyframes chipPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(171, 5, 32, 0.55);
+  }
+  75% {
+    box-shadow: 0 0 0 0.42rem rgba(171, 5, 32, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(171, 5, 32, 0);
+  }
+}
+
 @media (max-width: 1080px) {
+  .launch-chip {
+    display: none;
+  }
+
   .hero-grid,
   .report-header,
   .flight-grid,

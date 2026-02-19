@@ -3,6 +3,11 @@
   const UNIT_KEY = "stratocat-units";
   const THEME_EVENT = "stratocat:theme-changed";
   const UNIT_EVENT = "stratocat:units-changed";
+  const DEFAULT_SCHEDULE = {
+    nextLaunchIso: "2026-02-28T08:00:00-07:00",
+    nextLaunchLabel: "Saturday, February 28, 2026",
+    timezoneLabel: "Arizona (MST)"
+  };
 
   function readStorage(key) {
     try {
@@ -30,6 +35,33 @@
 
   function getSystemTheme() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function getLaunchSchedule() {
+    const schedule = window.StratocatData && window.StratocatData.schedule ? window.StratocatData.schedule : null;
+    return {
+      ...DEFAULT_SCHEDULE,
+      ...(schedule || {})
+    };
+  }
+
+  function getLaunchMissionLabel() {
+    const missions = window.StratocatData && Array.isArray(window.StratocatData.missions) ? window.StratocatData.missions : [];
+    const scheduledMission = missions.find((mission) => mission.status === "scheduled");
+    return scheduledMission && scheduledMission.missionCode ? scheduledMission.missionCode : "Next Launch";
+  }
+
+  function pad(value) {
+    return String(value).padStart(2, "0");
+  }
+
+  function formatCountdown(ms) {
+    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `T-${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
   }
 
   let currentTheme = normalizeTheme(readStorage(THEME_KEY)) || getSystemTheme();
@@ -150,6 +182,51 @@
     refreshLabels();
   }
 
+  function setupLaunchCountdownChip() {
+    const nav = document.querySelector(".nav");
+    if (!nav || nav.querySelector("[data-launch-chip]")) return;
+
+    const brand = nav.querySelector(".brand");
+    if (!brand) return;
+
+    const chip = document.createElement("div");
+    chip.className = "launch-chip";
+    chip.setAttribute("data-launch-chip", "true");
+
+    const dot = document.createElement("span");
+    dot.className = "launch-chip-dot";
+    dot.setAttribute("aria-hidden", "true");
+
+    const label = document.createElement("span");
+    label.className = "launch-chip-label";
+    label.textContent = getLaunchMissionLabel();
+
+    const value = document.createElement("span");
+    value.className = "launch-chip-value";
+
+    chip.append(dot, label, value);
+    nav.insertBefore(chip, brand.nextSibling);
+
+    const schedule = getLaunchSchedule();
+    chip.title = `Countdown to ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+    const target = new Date(schedule.nextLaunchIso).getTime();
+
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        value.textContent = "Window Open";
+        chip.classList.add("launch-live");
+        return;
+      }
+
+      value.textContent = formatCountdown(diff);
+      chip.classList.remove("launch-live");
+    }
+
+    tick();
+    window.setInterval(tick, 1000);
+  }
+
   function syncWithSystemThemeWhenNotOverridden() {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = () => {
@@ -182,6 +259,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     setActiveNav();
+    setupLaunchCountdownChip();
     setupMobileMenu();
     setupPreferenceControls();
   });
