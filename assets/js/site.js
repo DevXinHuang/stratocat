@@ -225,9 +225,10 @@
     const brand = nav.querySelector(".brand");
     if (!brand) return;
 
-    const chip = document.createElement("div");
+    const chip = document.createElement("a");
     chip.className = "launch-chip";
     chip.setAttribute("data-launch-chip", "true");
+    chip.setAttribute("href", "countdown.html");
 
     const dot = document.createElement("span");
     dot.className = "launch-chip-dot";
@@ -244,7 +245,8 @@
     nav.insertBefore(chip, brand.nextSibling);
 
     const schedule = getLaunchSchedule();
-    chip.title = `Countdown to ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+    chip.title = `Open countdown for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+    chip.setAttribute("aria-label", `Open countdown page for ${schedule.nextLaunchLabel}`);
     const target = new Date(schedule.nextLaunchIso).getTime();
 
     function tick() {
