@@ -4,6 +4,9 @@
     return;
   }
 
+  const FEET_PER_METER = 3.28084;
+  const MILES_PER_KM = 0.621371;
+
   const STATUS_CLASS = {
     completed: "status-completed",
     scheduled: "status-scheduled",
@@ -15,6 +18,57 @@
     if (status === "scheduled") return "Scheduled";
     if (status === "inprogress") return "In Progress";
     return status || "Unknown";
+  }
+
+  function currentUnits() {
+    if (window.StratocatPrefs && typeof window.StratocatPrefs.getUnits === "function") {
+      return window.StratocatPrefs.getUnits();
+    }
+    return "si";
+  }
+
+  function formatInt(value) {
+    return Number(value).toLocaleString("en-US", { maximumFractionDigits: 0 });
+  }
+
+  function formatFixed(value, decimals = 1) {
+    return Number(value).toLocaleString("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
+  }
+
+  function formatAltitude(meters) {
+    if (!meters) {
+      return "Goal >18,000 m / >59,055 ft";
+    }
+
+    const feet = Math.round(meters * FEET_PER_METER);
+    if (currentUnits() === "imperial") {
+      return `${formatInt(feet)} ft (${formatInt(meters)} m)`;
+    }
+
+    return `${formatInt(meters)} m (${formatInt(feet)} ft)`;
+  }
+
+  function formatDistance(km) {
+    if (!km) {
+      return "Pending";
+    }
+
+    const miles = km * MILES_PER_KM;
+    if (currentUnits() === "imperial") {
+      return `${formatFixed(miles, 1)} mi (${formatInt(km)} km)`;
+    }
+
+    return `${formatInt(km)} km (${formatFixed(miles, 1)} mi)`;
+  }
+
+  function formatDuration(hours) {
+    if (!hours) {
+      return "Planned";
+    }
+    return `${formatFixed(hours, 1)} h`;
   }
 
   function metricItem(label, value) {
@@ -44,9 +98,9 @@
         </figure>
 
         <div class="metric-grid compact">
-          ${metricItem("Duration", mission.durationHours ? `${mission.durationHours.toFixed(1)} h` : "Planned")}
-          ${metricItem("Max altitude", mission.maxAltitudeM ? `${mission.maxAltitudeM.toLocaleString()} m` : "Goal >18,000 m")}
-          ${metricItem("Landing distance", mission.landingDistanceKm ? `${mission.landingDistanceKm} km` : "Pending")}
+          ${metricItem("Duration", formatDuration(mission.durationHours))}
+          ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM))}
+          ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm))}
           ${metricItem("Tracker", mission.trackerMode)}
         </div>
 
@@ -129,8 +183,8 @@
     const durationEl = document.querySelector("#stat-duration");
 
     if (flightsEl) flightsEl.textContent = String(completed.length);
-    if (altitudeEl) altitudeEl.textContent = `${maxAltitude.toLocaleString()} m`;
-    if (durationEl) durationEl.textContent = `${maxDuration.toFixed(1)} h`;
+    if (altitudeEl) altitudeEl.textContent = maxAltitude ? formatAltitude(maxAltitude) : "Pending";
+    if (durationEl) durationEl.textContent = maxDuration ? `${formatFixed(maxDuration, 1)} h` : "Pending";
   }
 
   function findMissionFromQuery() {
@@ -152,9 +206,9 @@
     document.querySelector("#report-intro").textContent = mission.intro;
 
     document.querySelector("#report-metrics").innerHTML = `
-      ${metricItem("Duration", mission.durationHours ? `${mission.durationHours.toFixed(1)} h` : "Planned")}
-      ${metricItem("Max altitude", mission.maxAltitudeM ? `${mission.maxAltitudeM.toLocaleString()} m` : "Goal >18,000 m")}
-      ${metricItem("Landing distance", mission.landingDistanceKm ? `${mission.landingDistanceKm} km` : "Pending")}
+      ${metricItem("Duration", formatDuration(mission.durationHours))}
+      ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM))}
+      ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm))}
       ${metricItem("Tracker mode", mission.trackerMode)}
     `;
 
@@ -182,12 +236,20 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function renderUnitSensitiveViews() {
     renderMissionCards("[data-mission-cards='home']", () => true);
     renderMissionCards("[data-mission-cards='flights']", () => true);
-    renderComparisonTable("#comparison-table-body");
     renderHomeStats();
     renderMissionReport();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderUnitSensitiveViews();
+    renderComparisonTable("#comparison-table-body");
     renderScheduleSummary();
+  });
+
+  window.addEventListener("stratocat:units-changed", () => {
+    renderUnitSensitiveViews();
   });
 })();

@@ -26,7 +26,7 @@
         comms: "WSPR only",
         antenna: "Quarter-wave wire whip",
         runtime: "~6 hours (battery)",
-        maxAltitude: "12.46 km",
+        maxAltitude: "12.46 km / 40,879 ft",
         failureMode: "Battery voltage sag during cold soak"
       },
       missionOverview: [
@@ -103,7 +103,7 @@
         comms: "WSPR + improved decode workflow",
         antenna: "Tuned wire monopole with strain relief",
         runtime: "~10 hours (battery)",
-        maxAltitude: "17.68 km",
+        maxAltitude: "17.68 km / 58,005 ft",
         failureMode: "Antenna detune risk after moisture exposure"
       },
       missionOverview: [
@@ -180,7 +180,7 @@
         comms: "WSPR + backup telemetry",
         antenna: "Thermally isolated long-wire design",
         runtime: "Target: 24+ hours",
-        maxAltitude: "Goal: > 18 km",
+        maxAltitude: "Goal: >18 km / >59,055 ft",
         failureMode: "Primary risk: thermal/power imbalance at dawn transition"
       },
       missionOverview: [
