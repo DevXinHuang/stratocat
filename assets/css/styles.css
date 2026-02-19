@@ -20,8 +20,13 @@
     linear-gradient(160deg, #f8fbff 0%, #f2f5fb 58%, #eef2f8 100%);
   --header-bg: rgba(247, 250, 255, 0.92);
   --header-border: rgba(215, 222, 235, 0.85);
+  --nav-shell-bg: rgba(255, 255, 255, 0.78);
+  --nav-shell-border: rgba(212, 221, 235, 0.94);
+  --nav-shell-shadow: 0 12px 24px rgba(12, 35, 75, 0.12);
   --nav-active-bg: #f9e7ea;
   --nav-active-ink: var(--ink);
+  --nav-link-hover-bg: #eef3fd;
+  --nav-link-hover-ink: #18325e;
   --menu-toggle-bg: #fff;
   --menu-toggle-ink: var(--ink);
   --hero-media-bg: linear-gradient(140deg, #f5dce0 0%, #f2f6ff 100%);
@@ -123,11 +128,14 @@ code {
 }
 
 .nav {
-  min-height: 74px;
+  min-height: 94px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
-  gap: 1.3rem;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  position: relative;
+  padding: 0.55rem 0 0.65rem;
 }
 
 .brand {
@@ -191,23 +199,42 @@ code {
 .nav-menu {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.28rem;
   justify-content: flex-end;
   align-items: center;
+  margin-left: auto;
+  padding: 0.28rem;
+  border: 1px solid var(--nav-shell-border);
+  border-radius: 999px;
+  background: var(--nav-shell-bg);
+  box-shadow: var(--nav-shell-shadow);
 }
 
 .nav-menu a {
   text-decoration: none;
-  color: var(--ink-soft);
-  padding: 0.5rem 0.82rem;
+  color: var(--ink);
+  padding: 0.5rem 0.84rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible {
+  color: var(--nav-link-hover-ink);
+  background: var(--nav-link-hover-bg);
+  border-color: var(--line);
+  outline: none;
 }
 
 .nav-menu a[aria-current="page"] {
   color: var(--nav-active-ink);
   background: var(--nav-active-bg);
-  font-weight: 700;
+  border-color: var(--line);
+  font-weight: 800;
 }
 
 .menu-toggle {
@@ -217,14 +244,17 @@ code {
   border-radius: 10px;
   color: var(--menu-toggle-ink);
   padding: 0.35rem 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   font: inherit;
 }
 
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin-left: auto;
+  gap: 0.5rem;
+  margin-left: 0.3rem;
+  align-self: flex-start;
 }
 
 .pref-toggle {
@@ -232,15 +262,74 @@ code {
   background: var(--bg-elevated);
   color: var(--ink);
   border-radius: 999px;
-  padding: 0.38rem 0.68rem;
-  font-family: "Space Mono", monospace;
-  font-size: 0.74rem;
-  letter-spacing: 0.03em;
+  padding: 0.38rem 0.72rem;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.52rem;
+  font: inherit;
+  box-shadow: 0 8px 20px rgba(12, 35, 75, 0.12);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
 }
 
-.pref-toggle:hover {
+.pref-toggle-theme {
+  min-width: 132px;
+}
+
+.pref-toggle-units {
+  min-width: 110px;
+}
+
+.pref-icon {
+  width: 1.45rem;
+  height: 1.45rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+}
+
+.pref-icon svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pref-text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.06;
+}
+
+.pref-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ink-soft);
+}
+
+.pref-value {
+  font-family: "Space Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pref-toggle:hover,
+.pref-toggle:focus-visible {
   border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(12, 35, 75, 0.16);
+  outline: none;
 }
 
 .hero {
@@ -807,8 +896,13 @@ tbody tr:last-child th {
     linear-gradient(168deg, #0b1220 0%, #0e1728 58%, #101d31 100%);
   --header-bg: rgba(11, 18, 32, 0.9);
   --header-border: rgba(42, 58, 87, 0.95);
+  --nav-shell-bg: rgba(19, 29, 48, 0.92);
+  --nav-shell-border: rgba(58, 78, 116, 0.95);
+  --nav-shell-shadow: 0 14px 30px rgba(2, 6, 17, 0.42);
   --nav-active-bg: rgba(255, 79, 109, 0.18);
   --nav-active-ink: #ffd9e1;
+  --nav-link-hover-bg: rgba(171, 190, 222, 0.12);
+  --nav-link-hover-ink: #edf4ff;
   --menu-toggle-bg: #131d30;
   --menu-toggle-ink: #e7eefc;
   --hero-media-bg: linear-gradient(140deg, #2c2031 0%, #172238 100%);
@@ -858,8 +952,13 @@ tbody tr:last-child th {
       linear-gradient(168deg, #0b1220 0%, #0e1728 58%, #101d31 100%);
     --header-bg: rgba(11, 18, 32, 0.9);
     --header-border: rgba(42, 58, 87, 0.95);
+    --nav-shell-bg: rgba(19, 29, 48, 0.92);
+    --nav-shell-border: rgba(58, 78, 116, 0.95);
+    --nav-shell-shadow: 0 14px 30px rgba(2, 6, 17, 0.42);
     --nav-active-bg: rgba(255, 79, 109, 0.18);
     --nav-active-ink: #ffd9e1;
+    --nav-link-hover-bg: rgba(171, 190, 222, 0.12);
+    --nav-link-hover-ink: #edf4ff;
     --menu-toggle-bg: #131d30;
     --menu-toggle-ink: #e7eefc;
     --hero-media-bg: linear-gradient(140deg, #2c2031 0%, #172238 100%);
@@ -943,14 +1042,50 @@ tbody tr:last-child th {
     width: min(var(--max), calc(100% - 1.3rem));
   }
 
+  .nav {
+    min-height: 74px;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0;
+  }
+
   .nav-controls {
-    margin-left: 0;
+    margin-left: auto;
     gap: 0.35rem;
+    align-self: center;
   }
 
   .pref-toggle {
-    padding: 0.34rem 0.58rem;
-    font-size: 0.7rem;
+    min-height: 40px;
+    min-width: 0;
+    padding: 0.34rem 0.56rem;
+    gap: 0.38rem;
+  }
+
+  .pref-toggle-theme {
+    min-width: 95px;
+  }
+
+  .pref-toggle-units {
+    min-width: 88px;
+  }
+
+  .pref-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .pref-icon svg {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  .pref-label {
+    display: none;
+  }
+
+  .pref-value {
+    font-size: 0.73rem;
   }
 
   .menu-toggle {
@@ -961,14 +1096,19 @@ tbody tr:last-child th {
     position: absolute;
     left: 0;
     right: 0;
-    top: 74px;
+    top: 72px;
     display: none;
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
     background: var(--mobile-menu-bg);
     padding: 0.9rem 1rem 1rem;
+    border: 0;
+    border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    margin-left: 0;
   }
 
   .nav-menu.menu-open {

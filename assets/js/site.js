@@ -143,28 +143,64 @@
 
     const themeButton = document.createElement("button");
     themeButton.type = "button";
-    themeButton.className = "pref-toggle";
+    themeButton.className = "pref-toggle pref-toggle-theme";
     themeButton.setAttribute("data-theme-toggle", "true");
 
     const unitsButton = document.createElement("button");
     unitsButton.type = "button";
-    unitsButton.className = "pref-toggle";
+    unitsButton.className = "pref-toggle pref-toggle-units";
     unitsButton.setAttribute("data-units-toggle", "true");
 
     controls.append(themeButton, unitsButton);
 
-    const menuButton = nav.querySelector("[data-menu-toggle]");
-    if (menuButton) {
-      nav.insertBefore(controls, menuButton);
-    } else {
-      nav.appendChild(controls);
+    nav.appendChild(controls);
+
+    function themeIcon(theme) {
+      if (theme === "dark") {
+        return `
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20 15a8 8 0 1 1-9-9 6 6 0 0 0 9 9z"></path>
+          </svg>
+        `;
+      }
+
+      return `
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v3M12 19v3M4.9 4.9l2.2 2.2M16.9 16.9l2.2 2.2M2 12h3M19 12h3M4.9 19.1l2.2-2.2M16.9 7.1l2.2-2.2"></path>
+        </svg>
+      `;
     }
 
+    const unitsIcon = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="8" width="18" height="8" rx="2"></rect>
+        <path d="M7 8v3M10 8v2M13 8v3M16 8v2"></path>
+      </svg>
+    `;
+
     function refreshLabels() {
-      themeButton.textContent = `Theme: ${currentTheme === "dark" ? "Dark" : "Light"}`;
-      unitsButton.textContent = `Units: ${currentUnits === "si" ? "SI" : "Imperial"}`;
-      themeButton.setAttribute("aria-label", "Toggle light and dark theme");
-      unitsButton.setAttribute("aria-label", "Toggle SI and imperial units");
+      const themeLabel = currentTheme === "dark" ? "Dark" : "Light";
+      const unitsLabel = currentUnits === "si" ? "SI" : "Imperial";
+
+      themeButton.innerHTML = `
+        <span class="pref-icon">${themeIcon(currentTheme)}</span>
+        <span class="pref-text">
+          <span class="pref-label">Theme</span>
+          <span class="pref-value">${themeLabel}</span>
+        </span>
+      `;
+
+      unitsButton.innerHTML = `
+        <span class="pref-icon">${unitsIcon}</span>
+        <span class="pref-text">
+          <span class="pref-label">Units</span>
+          <span class="pref-value">${unitsLabel}</span>
+        </span>
+      `;
+
+      themeButton.setAttribute("aria-label", `Switch theme (current: ${themeLabel})`);
+      unitsButton.setAttribute("aria-label", `Switch units (current: ${unitsLabel})`);
     }
 
     themeButton.addEventListener("click", () => {
