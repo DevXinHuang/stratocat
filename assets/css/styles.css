@@ -19,6 +19,10 @@
   box-sizing: border-box;
 }
 
+html {
+  color-scheme: light;
+}
+
 html,
 body {
   margin: 0;
@@ -682,6 +686,109 @@ tbody tr:last-child th {
   animation: riseIn 0.55s ease both;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --bg-elevated: #131d30;
+    --ink: #e7eefc;
+    --ink-soft: #b8c7e2;
+    --accent: #ff4f6d;
+    --accent-strong: #c92145;
+    --signal: #ff8aa0;
+    --line: #2a3a57;
+    --shadow: 0 18px 40px rgba(2, 6, 17, 0.45);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background:
+      radial-gradient(circle at 14% 12%, rgba(255, 79, 109, 0.16) 0%, rgba(255, 79, 109, 0) 34%),
+      radial-gradient(circle at 88% 16%, rgba(70, 107, 170, 0.22) 0%, rgba(70, 107, 170, 0) 36%),
+      radial-gradient(circle at 26% 86%, rgba(36, 57, 92, 0.3) 0%, rgba(36, 57, 92, 0) 40%),
+      linear-gradient(168deg, #0b1220 0%, #0e1728 58%, #101d31 100%);
+  }
+
+  .site-header {
+    background: rgba(11, 18, 32, 0.9);
+    border-bottom: 1px solid rgba(42, 58, 87, 0.95);
+  }
+
+  .nav-menu a[aria-current="page"] {
+    background: rgba(255, 79, 109, 0.18);
+    color: #ffd9e1;
+  }
+
+  .menu-toggle {
+    background: #131d30;
+  }
+
+  .hero-image {
+    background: linear-gradient(140deg, #2c2031 0%, #172238 100%);
+  }
+
+  .button-ghost {
+    background: #18233a;
+    color: #e7eefc;
+    border-color: #334569;
+  }
+
+  .patch-wrap,
+  .metric-item,
+  .countdown-cell,
+  .table-wrap,
+  .embed-frame {
+    background: #111a2d;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid #263652;
+  }
+
+  thead th {
+    background: #18243c;
+    color: #c3d2ea;
+  }
+
+  .status-completed {
+    background: rgba(28, 108, 51, 0.22);
+    border-color: rgba(103, 196, 131, 0.48);
+    color: #9de2b2;
+  }
+
+  .status-scheduled {
+    background: rgba(143, 85, 23, 0.24);
+    border-color: rgba(242, 196, 138, 0.48);
+    color: #ffd59d;
+  }
+
+  .status-inprogress {
+    background: rgba(34, 95, 156, 0.24);
+    border-color: rgba(157, 197, 239, 0.42);
+    color: #abd1ff;
+  }
+
+  .soft-panel {
+    border: 1px dashed #3a4a69;
+    background: linear-gradient(120deg, #1a2134, #111a2d);
+  }
+
+  .logo-placeholder {
+    border: 1px dashed #4c5f84;
+    background: #151f32;
+    color: #a7badb;
+  }
+
+  .hero-callout {
+    background: linear-gradient(120deg, #291f2e, #17243b);
+  }
+
+}
+
 @keyframes riseIn {
   from {
     opacity: 0;
@@ -775,5 +882,11 @@ tbody tr:last-child th {
 
   .section {
     padding: 2.6rem 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) and (max-width: 760px) {
+  .nav-menu {
+    background: rgba(11, 18, 32, 0.98);
   }
 }
