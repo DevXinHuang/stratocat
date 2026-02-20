@@ -1,6 +1,6 @@
 # stratocat
 
-GitHub Pages site for the K7UAZ Picoballoon project.
+GitHub Pages site for the Stratocat project.
 
 ## Core pages
 

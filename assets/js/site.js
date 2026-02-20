@@ -242,7 +242,13 @@
     value.className = "launch-chip-value";
 
     chip.append(dot, label, value);
-    nav.insertBefore(chip, brand.nextSibling);
+
+    const controls = nav.querySelector("[data-pref-controls]");
+    if (controls) {
+      controls.insertBefore(chip, controls.firstChild);
+    } else {
+      nav.insertBefore(chip, brand.nextSibling);
+    }
 
     const schedule = getLaunchSchedule();
     chip.title = `Open countdown for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
@@ -297,8 +303,8 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     setActiveNav();
+    setupPreferenceControls();
     setupLaunchCountdownChip();
     setupMobileMenu();
-    setupPreferenceControls();
   });
 })();

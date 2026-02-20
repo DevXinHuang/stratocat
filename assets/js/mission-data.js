@@ -240,7 +240,7 @@
   };
 
   window.StratocatData = {
-    projectName: "K7UAZ Picoballoon",
+    projectName: "Stratocat",
     missions,
     schedule
   };
