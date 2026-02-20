@@ -1,6 +1,7 @@
 # stratocat
 
 GitHub Pages site for the K7UAZ Stratocat project.
+This version uses a more modern UI design across the full site.
 
 ## Core pages
 
