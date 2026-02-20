@@ -1,6 +1,6 @@
 # stratocat
 
-GitHub Pages site for the Stratocat project.
+GitHub Pages site for the K7UAZ Stratocat project.
 
 ## Core pages
 
