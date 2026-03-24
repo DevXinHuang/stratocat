@@ -157,86 +157,91 @@
     {
       slug: "design-c",
       label: "Design C",
-      title: "Flight Design C - Long Duration / Solar / Next-Gen",
-      missionCode: "Mission 2",
-      date: "2026-02-28",
-      dateLabel: "February 28, 2026 (weekend window)",
+      title: "Flight Design C - Third Launch Multi-Balloon Campaign",
+      missionCode: "Mission 3",
+      date: "2026-03-22",
+      dateLabel: "March 22, 2026",
       location: "Tucson, Arizona",
-      status: "scheduled",
+      status: "completed",
       patchImage: "pictures/stratocat02.png",
-      patchAlt: "Mission 2 campaign patch",
+      patchAlt: "Mission 3 campaign patch",
       intro:
-        "Design C is the active mission build targeting long-duration flight with solar support, tighter telemetry quality, and a more robust enclosure.",
-      trackerUrl:
-        "https://traquito.github.io/search/spots/dashboard/?band=20m&channel=39&callsign=K7UAZ&dtGte=2025-11-01",
-      trackerLabel: "Primary tracking dashboard",
+        "The third launch campaign successfully sent up 4 of the 5 planned balloons. Signals were received on 12m, 15m, and 20m, confirming multi-band coverage for the launch set.",
+      trackerUrl: "tracking.html",
+      trackerLabel: "Open all third-launch dashboards",
       durationHours: null,
       maxAltitudeM: null,
       landingDistanceKm: null,
-      trackerMode: "WSPR + planned redundancy",
+      durationLabel: "Tracking archive in progress",
+      maxAltitudeLabel: "Pending post-flight analysis",
+      landingDistanceLabel: "Recovery updates pending",
+      trackerMode: "WSPR on 12m / 15m / 20m",
       comparison: {
-        mass: "Target: <= 68 g",
-        power: "Target: 0.45 W avg / 1.0 W peak",
-        comms: "WSPR + backup telemetry",
-        antenna: "Thermally isolated long-wire design",
-        runtime: "Target: 24+ hours",
-        maxAltitude: "Goal: >18 km / >59,055 ft",
-        failureMode: "Primary risk: thermal/power imbalance at dawn transition"
+        mass: "4 balloons launched / 5 planned",
+        power: "Post-flight review in progress",
+        comms: "WSPR across 12m, 15m, and 20m",
+        antenna: "Band-specific flight setups",
+        runtime: "Tracking archive in progress",
+        maxAltitude: "Pending post-flight analysis",
+        failureMode: "1 balloon did not rise at release and will be retried"
       },
       missionOverview: [
-        "Launch objective: demonstrate long-duration profile with improved telemetry continuity.",
-        "Primary success condition: sustain mission operations through at least one full diurnal cycle.",
-        "Secondary success condition: close data gaps in descent and recovery phases."
+        "Launch objective: fly multiple balloons in one campaign and confirm signals across all target bands.",
+        "Primary success condition: receive telemetry from at least one balloon on 12m, 15m, and 20m.",
+        "Secondary success condition: publish direct dashboards quickly so the team can monitor each active flight."
       ],
       architecture: [
-        "Solar-assisted power architecture with low-leakage overnight mode.",
-        "Higher integrity payload enclosure and better cable/antenna isolation.",
-        "Expanded onboard logging for thermal and voltage diagnostics."
+        "Four active flight configurations were launched under the K7UAZ callsign.",
+        "Each balloon was staged on a dedicated Traquito dashboard using a specific band and channel pairing.",
+        "Detailed hardware deltas for each balloon will be added after the full post-flight write-up."
       ],
       groundStation: [
-        "Pre-staged dashboard bookmarks for primary and backup channels.",
-        "Automated spot capture plus manual operator log for event timing.",
-        "Recovery planning includes dynamic corridor updates every 30 minutes."
+        "Launch-day operators used pre-staged Traquito dashboards for all active band and channel combinations.",
+        "First signals were confirmed across 12m, 15m, and 20m during the launch campaign.",
+        "The tracking page now archives the four dashboard links for replay and review."
       ],
       powerAndThermal: [
-        "Solar panel and battery balance modeled for cold morning startup.",
-        "Insulation and venting tuned to avoid condensation during descent.",
-        "Critical telemetry thresholds configured for low-voltage alerts."
+        "Thermal and endurance analysis is still being compiled from the third launch telemetry.",
+        "Early signal confirmation shows the launched set came up successfully across the target bands.",
+        "Detailed altitude, runtime, and power summaries will be added after post-flight review."
       ],
       opsChecklist: [
-        "Complete final mass audit and verify center-of-mass alignment.",
-        "Run full ground thermal soak test 48 hours before launch.",
-        "Confirm FAA/ham compliance checklist and team radio assignments."
+        "Five balloons were prepared for release during the third launch campaign.",
+        "Four balloons launched successfully and one did not rise, so it was held for a later retry.",
+        "Dashboard links and UTC event notes were used to confirm launch-day status."
       ],
       results: [
-        "Status: scheduled for Saturday, February 28, 2026.",
-        "Success criteria will be scored against telemetry uptime, duration, and recovery quality.",
-        "Post-flight report will be published after launch weekend."
+        "4 of the 5 planned balloons launched successfully on March 22, 2026.",
+        "At least one balloon was heard on every target band: 12m, 15m, and 20m.",
+        "Four tracking dashboards are now published while post-flight analysis continues."
       ],
       lessons: [
-        "Design C planning is incorporating all failure modes observed in A and B.",
-        "A launch-day go/no-go gate is required for weather and RF conditions.",
-        "Thermal validation must be completed before the final integration freeze."
+        "Multi-balloon operations need a clear go or no-go check for lift before release.",
+        "Cross-band dashboard staging made it easier to verify signals quickly.",
+        "Launch-day summaries should immediately include direct links for every active balloon."
       ],
       roadmap: [
-        "Execute launch window on February 28 weekend.",
-        "Publish telemetry and postmortem within one week.",
-        "Define Design D scope based on long-duration findings."
+        "Publish the full post-flight analysis for the March 22, 2026 campaign.",
+        "Retry the balloon that did not rise during the initial release.",
+        "Use third-launch data to define the next campaign."
       ],
       gallery: [
         {
           src: "pictures/stratocat02.png",
-          alt: "Mission 2 badge image",
-          caption: "Mission 2 campaign badge from the active mission cycle."
+          alt: "Mission 3 badge image",
+          caption: "Mission 3 campaign badge from the third launch cycle."
         }
       ]
     }
   ];
 
   const schedule = {
-    nextLaunchIso: "2026-02-28T08:00:00-07:00",
-    nextLaunchLabel: "Saturday, February 28, 2026",
-    timezoneLabel: "Arizona (MST)"
+    status: "completed",
+    nextLaunchIso: null,
+    nextLaunchLabel: "Sunday, March 22, 2026",
+    timezoneLabel: "Arizona MST",
+    launchChipLabel: "Launch 3",
+    launchChipValue: "Complete"
   };
 
   window.StratocatData = {

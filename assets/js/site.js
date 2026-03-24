@@ -4,9 +4,12 @@
   const THEME_EVENT = "stratocat:theme-changed";
   const UNIT_EVENT = "stratocat:units-changed";
   const DEFAULT_SCHEDULE = {
-    nextLaunchIso: "2026-02-28T08:00:00-07:00",
-    nextLaunchLabel: "Saturday, February 28, 2026",
-    timezoneLabel: "Arizona (MST)"
+    status: "completed",
+    nextLaunchIso: null,
+    nextLaunchLabel: "Sunday, March 22, 2026",
+    timezoneLabel: "Arizona MST",
+    launchChipLabel: "Launch 3",
+    launchChipValue: "Complete"
   };
 
   function readStorage(key) {
@@ -46,6 +49,11 @@
   }
 
   function getLaunchMissionLabel() {
+    const schedule = getLaunchSchedule();
+    if (schedule.launchChipLabel) {
+      return schedule.launchChipLabel;
+    }
+
     const missions = window.StratocatData && Array.isArray(window.StratocatData.missions) ? window.StratocatData.missions : [];
     const scheduledMission = missions.find((mission) => mission.status === "scheduled");
     return scheduledMission && scheduledMission.missionCode ? scheduledMission.missionCode : "Next Launch";
@@ -251,8 +259,14 @@
     }
 
     const schedule = getLaunchSchedule();
-    chip.title = `Open countdown for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
-    chip.setAttribute("aria-label", `Open countdown page for ${schedule.nextLaunchLabel}`);
+    chip.title = `Open launch page for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+    chip.setAttribute("aria-label", `Open launch page for ${schedule.nextLaunchLabel}`);
+
+    if (schedule.status === "completed" || !schedule.nextLaunchIso) {
+      value.textContent = schedule.launchChipValue || "Complete";
+      return;
+    }
+
     const target = new Date(schedule.nextLaunchIso).getTime();
 
     function tick() {

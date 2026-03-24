@@ -38,9 +38,9 @@
     });
   }
 
-  function formatAltitude(meters) {
-    if (!meters) {
-      return "Goal >18,000 m / >59,055 ft";
+  function formatAltitude(meters, fallback = "Pending") {
+    if (meters === null || meters === undefined) {
+      return fallback;
     }
 
     const feet = Math.round(meters * FEET_PER_METER);
@@ -51,9 +51,9 @@
     return `${formatInt(meters)} m (${formatInt(feet)} ft)`;
   }
 
-  function formatDistance(km) {
-    if (!km) {
-      return "Pending";
+  function formatDistance(km, fallback = "Pending") {
+    if (km === null || km === undefined) {
+      return fallback;
     }
 
     const miles = km * MILES_PER_KM;
@@ -64,9 +64,9 @@
     return `${formatInt(km)} km (${formatFixed(miles, 1)} mi)`;
   }
 
-  function formatDuration(hours) {
-    if (!hours) {
-      return "Planned";
+  function formatDuration(hours, fallback = "Pending") {
+    if (hours === null || hours === undefined) {
+      return fallback;
     }
     return `${formatFixed(hours, 1)} h`;
   }
@@ -83,6 +83,10 @@
   }
 
   function flightCardMarkup(mission) {
+    const durationLabel = mission.durationLabel || (mission.status === "scheduled" ? "Planned" : "Pending");
+    const altitudeLabel = mission.maxAltitudeLabel || "Pending";
+    const distanceLabel = mission.landingDistanceLabel || "Pending";
+
     return `
       <article class="card flight-card">
         <div class="flight-card-head">
@@ -98,9 +102,9 @@
         </figure>
 
         <div class="metric-grid compact">
-          ${metricItem("Duration", formatDuration(mission.durationHours))}
-          ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM))}
-          ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm))}
+          ${metricItem("Duration", formatDuration(mission.durationHours, durationLabel))}
+          ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM, altitudeLabel))}
+          ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm, distanceLabel))}
           ${metricItem("Tracker", mission.trackerMode)}
         </div>
 
@@ -206,9 +210,9 @@
     document.querySelector("#report-intro").textContent = mission.intro;
 
     document.querySelector("#report-metrics").innerHTML = `
-      ${metricItem("Duration", formatDuration(mission.durationHours))}
-      ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM))}
-      ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm))}
+      ${metricItem("Duration", formatDuration(mission.durationHours, mission.durationLabel || "Pending"))}
+      ${metricItem("Max altitude", formatAltitude(mission.maxAltitudeM, mission.maxAltitudeLabel || "Pending"))}
+      ${metricItem("Landing distance", formatDistance(mission.landingDistanceKm, mission.landingDistanceLabel || "Pending"))}
       ${metricItem("Tracker mode", mission.trackerMode)}
     `;
 
