@@ -9,7 +9,8 @@
     nextLaunchLabel: "Sunday, March 22, 2026",
     timezoneLabel: "Arizona MST",
     launchChipLabel: "Launch 3",
-    launchChipValue: "Complete"
+    launchChipValue: "Complete",
+    launchChipHref: "countdown.html"
   };
 
   function readStorage(key) {
@@ -232,11 +233,12 @@
 
     const brand = nav.querySelector(".brand");
     if (!brand) return;
+    const schedule = getLaunchSchedule();
 
     const chip = document.createElement("a");
     chip.className = "launch-chip";
     chip.setAttribute("data-launch-chip", "true");
-    chip.setAttribute("href", "countdown.html");
+    chip.setAttribute("href", schedule.launchChipHref || "countdown.html");
 
     const dot = document.createElement("span");
     dot.className = "launch-chip-dot";
@@ -258,9 +260,19 @@
       nav.insertBefore(chip, brand.nextSibling);
     }
 
-    const schedule = getLaunchSchedule();
-    chip.title = `Open launch page for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
-    chip.setAttribute("aria-label", `Open launch page for ${schedule.nextLaunchLabel}`);
+    if (schedule.status === "inprogress") {
+      chip.title = `Open live tracking for ${getLaunchMissionLabel()}`;
+      chip.setAttribute("aria-label", `Open live tracking for ${getLaunchMissionLabel()}`);
+    } else {
+      chip.title = `Open launch page for ${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+      chip.setAttribute("aria-label", `Open launch page for ${schedule.nextLaunchLabel}`);
+    }
+
+    if (schedule.status === "inprogress") {
+      value.textContent = schedule.launchChipValue || "Live";
+      chip.classList.add("launch-live");
+      return;
+    }
 
     if (schedule.status === "completed" || !schedule.nextLaunchIso) {
       value.textContent = schedule.launchChipValue || "Complete";
