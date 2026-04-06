@@ -34,8 +34,15 @@
           <h1>Flight electronics and envelope system for stratospheric endurance.</h1>
           <p>
             The vehicle stack is built around low-mass telemetry, fragile solar power surfaces, and a flight envelope process
-            tuned for reliability before launch day.
+            tuned for reliability before launch day. We also point builders to Traquito for deeper WSPR pico-balloon
+            reference material on trackers, solar-power tradeoffs, and tracking workflows.
           </p>
+          <div class="button-row">
+            <a class="button" href="https://traquito.github.io/" target="_blank" rel="noopener noreferrer">Visit Traquito</a>
+            <a class="button button-ghost" href="https://traquito.github.io/tracker/" target="_blank" rel="noopener noreferrer"
+              >Jetpack Tracker Docs</a
+            >
+          </div>
         </div>
       </section>
 
@@ -45,6 +52,11 @@
             <h3>Tracker Hardware</h3>
             <ul>
               <li>Core system: Raspberry Pi Pico with configurable WSPR messages.</li>
+              <li>
+                Traquito's Jetpack reference shows how a Pico-class tracker can pair GPS, radio, and voltage monitoring in a
+                compact student-buildable stack.
+              </li>
+              <li>That documentation is especially useful when students are learning how GPS, altitude, speed, and voltage telemetry fit together.</li>
               <li>Firmware controls transmit band and slot assignments for each mission profile.</li>
               <li>Hardware state is validated during preflight checkout and launch rehearsal.</li>
             </ul>
@@ -54,6 +66,10 @@
             <ul>
               <li>Ublox GPS receiver provides positional and timing data for telemetry packets.</li>
               <li>Power architecture uses fragile bare solar cells with lightweight interconnect handling.</li>
+              <li>
+                Traquito's solar documentation is a strong comparison reference because it clearly lays out lighter, cheaper
+                fragile-cell builds versus more robust but costlier PowerFilm options.
+              </li>
               <li>Power continuity is tracked through cold weather and low-sun-angle conditions.</li>
             </ul>
           </article>
@@ -62,6 +78,10 @@
             <ul>
               <li>The physical tether is used as half of the antenna system.</li>
               <li>Trade studies and VNA measurements guide tuning across expected flight conditions.</li>
+              <li>
+                We also use Traquito's tracker and GUI references to help students connect antenna choices, band/channel
+                planning, and what they later see in live tracking dashboards.
+              </li>
               <li>Antenna routing is coordinated with structure and insulation to reduce detuning risk.</li>
             </ul>
           </article>
@@ -87,6 +107,46 @@
               Current campaign imagery is shown below while the team continues publishing close-up payload, solar, and antenna
               build photography.
             </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="layout split reveal">
+          <article class="card">
+            <h3>Why We Recommend Traquito</h3>
+            <p>
+              Traquito is one of the clearest public references we found for WSPR pico-balloon work. It is especially useful
+              for student onboarding because it ties together hardware, configuration, telemetry, and tracking in one place.
+            </p>
+            <ul>
+              <li>Jetpack tracker overview and technical details for Pico-based WSPR systems.</li>
+              <li>Solar-power guides that compare ease, durability, cost, weight, and assembly time.</li>
+              <li>Web tools for tracker setup, channel planning, and dashboard-based flight follow-up.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Official Traquito Resources</h3>
+            <p>
+              Visitors who want the full reference set should start with the official site and then branch into tracker,
+              solar, and configuration pages.
+            </p>
+            <div class="button-row">
+              <a class="button" href="https://traquito.github.io/" target="_blank" rel="noopener noreferrer">Traquito Home</a>
+              <a class="button button-ghost" href="https://traquito.github.io/tracker/" target="_blank" rel="noopener noreferrer"
+                >Jetpack Tracker</a
+              >
+              <a class="button button-ghost" href="https://traquito.github.io/solar/" target="_blank" rel="noopener noreferrer"
+                >Solar Power Guide</a
+              >
+              <a
+                class="button button-ghost"
+                href="https://traquito.github.io/trackergui/help/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Tracker GUI Help</a
+              >
+            </div>
           </article>
         </div>
       </section>
