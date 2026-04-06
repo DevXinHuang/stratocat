@@ -82,8 +82,8 @@
       label: "Design B",
       title: "Flight Design B - Reliability + Range",
       missionCode: "Mission 1.5",
-      date: "2026-01-11",
-      dateLabel: "January 11, 2026",
+      date: "2026-01-31",
+      dateLabel: "January 31, 2026",
       location: "Tucson, Arizona",
       status: "completed",
       patchImage: "pictures/stratocat02.png",
@@ -91,10 +91,10 @@
       intro:
         "Design B focused on reliability and range with stronger thermal handling and refined field operations. This mission included support from community member Brendon (KC5VCW).",
       trackerUrl:
-        "https://traquito.github.io/search/spots/dashboard/?band=20m&channel=150&callsign=KC5VCW&dtGte=2026-01-01",
+        "https://traquito.github.io/search/spots/dashboard/?band=20m&channel=150&callsign=KC5VCW&dtGte=2026-01-31",
       trackerLabel: "Traquito 20m Ch150 - KC5VCW",
-      durationHours: 7.9,
-      maxAltitudeM: 17680,
+      durationHours: 73.8,
+      maxAltitudeM: 12700,
       landingDistanceKm: 54,
       trackerMode: "WSPR 20m Ch150",
       comparison: {
@@ -102,8 +102,8 @@
         power: "0.68 W avg / 1.0 W peak",
         comms: "WSPR + improved decode workflow",
         antenna: "Tuned wire monopole with strain relief",
-        runtime: "~10 hours (battery)",
-        maxAltitude: "17.68 km / 58,005 ft",
+        runtime: "73 h 50 m",
+        maxAltitude: "12.70 km / 41,667 ft",
         failureMode: "Antenna detune risk after moisture exposure"
       },
       missionOverview: [
@@ -158,22 +158,23 @@
       slug: "design-c",
       label: "Design C",
       title: "Flight Design C - Third Launch Multi-Balloon Campaign",
-      missionCode: "Mission 3",
+      missionCode: "Mission 2",
       date: "2026-03-22",
       dateLabel: "March 22, 2026",
       location: "Tucson, Arizona",
       status: "inprogress",
       patchImage: "pictures/stratocat02.png",
-      patchAlt: "Mission 3 campaign patch",
+      patchAlt: "Mission 2 campaign patch",
       intro:
-        "Mission 3 launched four of the five planned balloons on March 22, 2026. As of March 29, 2026, the active Stratocat flight has exited the conflict region, is approaching India at 20.3128 N, 69.9599 E, and has reached the halfway-around-the-Earth milestone.",
+        "Mission 2 launched four of the five planned balloons on March 22, 2026. At 8:48 local time (15:48 UTC) on April 4, 2026, near 19.48 N, 108.46 W, the lead Stratocat balloon re-established transmission after completing a full global trajectory and confirmed one full circumnavigation of Earth.",
       trackerUrl: "tracking.html",
-      trackerLabel: "Open live Mission 3 tracking",
+      trackerLabel: "Open live Mission 2 tracking",
       durationHours: null,
-      maxAltitudeM: null,
+      durationStartIso: "2026-03-22T12:18:00-07:00",
+      maxAltitudeM: 13240,
       landingDistanceKm: null,
       durationLabel: "Flight still active",
-      maxAltitudeLabel: "Live tracking update pending",
+      maxAltitudeLabel: "13.24 km / 43,438 ft",
       landingDistanceLabel: "Flight still active",
       trackerMode: "WSPR on 12m / 15m / 20m",
       comparison: {
@@ -181,15 +182,15 @@
         power: "Flight system nominal during active track",
         comms: "WSPR across 12m, 15m, and 20m",
         antenna: "Band-specific flight setups",
-        runtime: "Flight still active",
-        maxAltitude: "Live tracking update pending",
+        runtime: "Live since March 22, 2026 12:18 MST",
+        maxAltitude: "13.24 km / 43,438 ft",
         failureMode: "1 balloon did not rise at release and will be retried"
       },
       missionOverview: [
         "Launch objective: fly multiple balloons in one campaign and confirm signals across all target bands.",
         "Primary success condition: receive telemetry from at least one balloon on 12m, 15m, and 20m.",
         "Secondary success condition: publish direct dashboards quickly so the team can monitor each active flight.",
-        "March 29, 2026 update: the active track has exited the conflict region and is now approaching India."
+        "April 4, 2026 update: the lead balloon re-established transmission near 19.48 N, 108.46 W after one full circumnavigation of Earth."
       ],
       architecture: [
         "Four active flight configurations were launched under the K7UAZ callsign.",
@@ -200,11 +201,11 @@
         "Launch-day operators used pre-staged Traquito dashboards for all active band and channel combinations.",
         "First signals were confirmed across 12m, 15m, and 20m during the launch campaign.",
         "The tracking page now archives the four dashboard links for replay and review.",
-        "Current live position update: 20.3128 N, 69.9599 E as the flight approaches India."
+        "At 15:48 UTC on April 4, 2026, transmission was re-established near 19.48 N, 108.46 W, confirming one completed orbit."
       ],
       powerAndThermal: [
-        "Thermal and endurance analysis is still being compiled from the active Mission 3 telemetry.",
-        "The system continues to perform well as the live track advances toward India.",
+        "Thermal and endurance analysis is still being compiled from the active Mission 2 telemetry.",
+        "The system continues to perform well as the live track advances beyond its first completed orbit.",
         "Detailed altitude, runtime, and power summaries will be added after the flight concludes."
       ],
       opsChecklist: [
@@ -216,8 +217,8 @@
       results: [
         "4 of the 5 planned balloons launched successfully on March 22, 2026.",
         "At least one balloon was heard on every target band: 12m, 15m, and 20m.",
-        "As of March 29, 2026, the active balloon has exited the conflict region and is approaching India.",
-        "The mission has now reached the halfway-around-the-Earth milestone.",
+        "At 8:48 local time (15:48 UTC) on April 4, 2026, the lead balloon re-established transmission near 19.48 N, 108.46 W.",
+        "The mission has now completed one full circumnavigation of Earth.",
         "Four tracking dashboards are published while the live flight continues."
       ],
       lessons: [
@@ -226,16 +227,16 @@
         "Launch-day summaries should immediately include direct links for every active balloon."
       ],
       roadmap: [
-        "Continue publishing live mission updates as the active balloon advances beyond India.",
-        "Publish the full post-flight analysis after the Mission 3 flight concludes.",
+        "Continue publishing live mission updates as the Mission 2 flight continues beyond its first full orbit.",
+        "Publish the full post-flight analysis after the Mission 2 flight concludes.",
         "Retry the balloon that did not rise during the initial release.",
         "Use third-launch data to define the next campaign."
       ],
       gallery: [
         {
           src: "pictures/stratocat02.png",
-          alt: "Mission 3 badge image",
-          caption: "Mission 3 campaign badge from the third launch cycle."
+          alt: "Mission 2 badge image",
+          caption: "Mission 2 campaign badge from the third launch cycle."
         }
       ]
     }
@@ -246,7 +247,7 @@
     nextLaunchIso: null,
     nextLaunchLabel: "Sunday, March 22, 2026",
     timezoneLabel: "Arizona MST",
-    launchChipLabel: "Mission 3",
+    launchChipLabel: "Mission 2",
     launchChipValue: "Live",
     launchChipHref: "tracking.html"
   };

@@ -56,7 +56,30 @@
                 <div class="stat-label">Max altitude</div>
               </div>
               <div class="stat-badge">
-                <div class="stat-value" id="stat-duration">0.0 h</div>
+                <div class="stat-value stat-value-live-counter" id="stat-duration">
+                  <span class="stat-counter-kicker">
+                    <span class="stat-counter-dot" aria-hidden="true"></span>
+                    Mission elapsed
+                  </span>
+                  <span class="stat-counter-major">
+                    <span class="stat-counter-number">0</span>
+                    <span class="stat-counter-unit stat-counter-unit-major">Days</span>
+                  </span>
+                  <span class="stat-counter-minor">
+                    <span class="stat-counter-segment">
+                      <span class="stat-counter-number">00</span>
+                      <span class="stat-counter-unit">Hrs</span>
+                    </span>
+                    <span class="stat-counter-segment">
+                      <span class="stat-counter-number">00</span>
+                      <span class="stat-counter-unit">Min</span>
+                    </span>
+                    <span class="stat-counter-segment">
+                      <span class="stat-counter-number">00</span>
+                      <span class="stat-counter-unit">Sec</span>
+                    </span>
+                  </span>
+                </div>
                 <div class="stat-label">Longest track time</div>
               </div>
             </div>
@@ -80,13 +103,13 @@
           <article class="card">
             <strong>Current Mission Status</strong>
             <p>
-              Mission 3 launched on <span data-next-launch-label>Sunday, March 22, 2026</span> and remains in flight.
-              As of March 29, 2026, the active Stratocat balloon has exited the conflict region, is approaching India,
-              and has reached the halfway-around-the-Earth milestone at 20.3128 N, 69.9599 E.
+              Mission 2 launched on <span data-next-launch-label>Sunday, March 22, 2026</span> and remains in flight.
+              At 8:48 local time (15:48 UTC) on April 4, 2026, the lead Stratocat balloon re-established transmission
+              near 19.48 N, 108.46 W after completing a full global trajectory.
             </p>
             <p>
-              The system continues to perform well, and the trajectory remains stable as the mission moves into its next
-              phase.
+              This confirms one full circumnavigation of Earth. The flight is continuing strong, and live tracking
+              remains available as the mission moves beyond its first orbit.
             </p>
             <div class="button-row">
               <a class="button" href="tracking.html">Open Live Tracking</a>
@@ -115,8 +138,8 @@
       </div>
     </footer>
 
-    <script src="assets/js/site.js"></script>
-    <script src="assets/js/mission-data.js"></script>
-    <script src="assets/js/components.js"></script>
+    <script src="assets/js/site.js?v=20260406-live"></script>
+    <script src="assets/js/mission-data.js?v=20260406-live"></script>
+    <script src="assets/js/components.js?v=20260406-live"></script>
   </body>
 </html>

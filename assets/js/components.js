@@ -38,6 +38,10 @@
     });
   }
 
+  function padClock(value) {
+    return String(value).padStart(2, "0");
+  }
+
   function formatAltitude(meters, fallback = "Pending") {
     if (meters === null || meters === undefined) {
       return fallback;
@@ -69,6 +73,56 @@
       return fallback;
     }
     return `${formatFixed(hours, 1)} h`;
+  }
+
+  function missionDurationMs(mission, now = Date.now()) {
+    if (mission.durationHours !== null && mission.durationHours !== undefined) {
+      return mission.durationHours * 60 * 60 * 1000;
+    }
+
+    if (!mission.durationStartIso) {
+      return null;
+    }
+
+    const startMs = Date.parse(mission.durationStartIso);
+    if (Number.isNaN(startMs)) {
+      return null;
+    }
+
+    return Math.max(0, now - startMs);
+  }
+
+  function formatDurationCounterMarkup(durationMs) {
+    const totalSeconds = Math.max(0, Math.floor(durationMs / 1000));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `
+      <span class="stat-counter-kicker">
+        <span class="stat-counter-dot" aria-hidden="true"></span>
+        Mission elapsed
+      </span>
+      <span class="stat-counter-major">
+        <span class="stat-counter-number">${formatInt(days)}</span>
+        <span class="stat-counter-unit stat-counter-unit-major">Days</span>
+      </span>
+      <span class="stat-counter-minor">
+        <span class="stat-counter-segment">
+          <span class="stat-counter-number">${padClock(hours)}</span>
+          <span class="stat-counter-unit">Hrs</span>
+        </span>
+        <span class="stat-counter-segment">
+          <span class="stat-counter-number">${padClock(minutes)}</span>
+          <span class="stat-counter-unit">Min</span>
+        </span>
+        <span class="stat-counter-segment">
+          <span class="stat-counter-number">${padClock(seconds)}</span>
+          <span class="stat-counter-unit">Sec</span>
+        </span>
+      </span>
+    `;
   }
 
   function metricItem(label, value) {
@@ -178,17 +232,71 @@
   }
 
   function renderHomeStats() {
-    const completed = data.missions.filter((mission) => mission.status === "completed");
-    const maxAltitude = completed.reduce((max, mission) => Math.max(max, mission.maxAltitudeM || 0), 0);
-    const maxDuration = completed.reduce((max, mission) => Math.max(max, mission.durationHours || 0), 0);
+    const launched = data.missions.filter((mission) => mission.status !== "scheduled");
+    const maxAltitude = launched.reduce((max, mission) => Math.max(max, mission.maxAltitudeM || 0), 0);
+    const activeMission = launched.find((mission) => mission.status === "inprogress" && mission.durationStartIso);
 
     const flightsEl = document.querySelector("#stat-flights");
     const altitudeEl = document.querySelector("#stat-altitude");
     const durationEl = document.querySelector("#stat-duration");
+    const durationCard = durationEl ? durationEl.closest(".stat-badge") : null;
 
-    if (flightsEl) flightsEl.textContent = String(completed.length);
+    if (window.StratocatHomeDurationTimer) {
+      window.clearInterval(window.StratocatHomeDurationTimer);
+      window.StratocatHomeDurationTimer = null;
+    }
+
+    if (flightsEl) flightsEl.textContent = String(launched.length);
     if (altitudeEl) altitudeEl.textContent = maxAltitude ? formatAltitude(maxAltitude) : "Pending";
-    if (durationEl) durationEl.textContent = maxDuration ? `${formatFixed(maxDuration, 1)} h` : "Pending";
+
+    if (!durationEl) {
+      return;
+    }
+
+    const updateDuration = () => {
+      const now = Date.now();
+      const longest = activeMission
+        ? { mission: activeMission, durationMs: missionDurationMs(activeMission, now) }
+        : launched.reduce((current, mission) => {
+            const durationMs = missionDurationMs(mission, now);
+            if (durationMs === null) {
+              return current;
+            }
+
+            if (!current || durationMs > current.durationMs) {
+              return { mission, durationMs };
+            }
+
+            return current;
+          }, null);
+
+      if (!longest || longest.durationMs === null) {
+        durationEl.textContent = "Pending";
+        durationEl.classList.remove("stat-value-live-counter");
+        if (durationCard) durationCard.classList.remove("stat-badge-live");
+        durationEl.removeAttribute("title");
+        return;
+      }
+
+      if (longest.mission.durationStartIso) {
+        durationEl.innerHTML = formatDurationCounterMarkup(longest.durationMs);
+        durationEl.classList.add("stat-value-live-counter");
+        if (durationCard) durationCard.classList.add("stat-badge-live");
+        durationEl.title = "Live count-up since March 22, 2026 12:18 MST";
+        return;
+      }
+
+      durationEl.textContent = `${formatFixed(longest.durationMs / 3600000, 1)} h`;
+      durationEl.classList.remove("stat-value-live-counter");
+      if (durationCard) durationCard.classList.remove("stat-badge-live");
+      durationEl.removeAttribute("title");
+    };
+
+    updateDuration();
+
+    if (activeMission) {
+      window.StratocatHomeDurationTimer = window.setInterval(updateDuration, 1000);
+    }
   }
 
   function findMissionFromQuery() {
