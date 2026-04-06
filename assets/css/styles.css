@@ -68,6 +68,27 @@
   --status-muted-bg: #edf2fb;
   --status-muted-border: #c2cee1;
   --status-muted-ink: #4c6389;
+  --live-card-border: rgba(112, 153, 214, 0.4);
+  --live-card-bg:
+    radial-gradient(circle at top right, rgba(130, 179, 255, 0.3), transparent 42%),
+    linear-gradient(180deg, rgba(241, 246, 255, 0.98), rgba(220, 232, 250, 0.98));
+  --live-card-shadow:
+    0 16px 28px rgba(31, 58, 107, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  --live-card-sheen: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 40%);
+  --live-card-kicker: rgba(47, 77, 119, 0.86);
+  --live-card-number: #183660;
+  --live-card-unit: rgba(54, 83, 126, 0.82);
+  --live-card-major-unit: #274b80;
+  --live-card-segment-border: rgba(109, 151, 213, 0.28);
+  --live-card-segment-bg: rgba(255, 255, 255, 0.52);
+  --live-card-segment-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  --live-card-label: rgba(37, 62, 101, 0.9);
+  --hero-badge-bg:
+    radial-gradient(circle at 50% 16%, rgba(102, 149, 221, 0.16) 0%, rgba(102, 149, 221, 0) 34%),
+    linear-gradient(180deg, #fbfdff 0%, #edf3ff 100%);
+  --hero-badge-caption-bg: rgba(248, 251, 255, 0.94);
+  --hero-badge-caption-ink: #486489;
 }
 
 * {
@@ -432,11 +453,31 @@ h6 {
   background: var(--hero-media-bg);
 }
 
+.hero-image img {
+  width: 100%;
+}
+
+.hero-image-badge {
+  background: var(--hero-badge-bg);
+}
+
+.hero-image-badge img {
+  margin: 0 auto;
+  padding: 1.35rem;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
 .hero-image figcaption {
   font-size: 0.85rem;
   padding: 0.8rem 1rem;
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
+}
+
+.hero-image-badge figcaption {
+  background: var(--hero-badge-caption-bg);
+  color: var(--hero-badge-caption-ink);
 }
 
 .button-row {
@@ -500,20 +541,16 @@ h6 {
 
 .stat-badge-live {
   overflow: hidden;
-  border-color: rgba(100, 170, 255, 0.42);
-  background:
-    radial-gradient(circle at top right, rgba(108, 162, 255, 0.18), transparent 40%),
-    linear-gradient(180deg, rgba(13, 31, 68, 0.92), rgba(9, 21, 48, 0.96));
-  box-shadow:
-    0 16px 28px rgba(5, 11, 28, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-color: var(--live-card-border);
+  background: var(--live-card-bg);
+  box-shadow: var(--live-card-shadow);
 }
 
 .stat-badge-live::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 38%);
+  background: var(--live-card-sheen);
   pointer-events: none;
 }
 
@@ -549,7 +586,7 @@ h6 {
   font-size: 0.63rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(216, 230, 255, 0.78);
+  color: var(--live-card-kicker);
 }
 
 .stat-counter-dot {
@@ -578,9 +615,9 @@ h6 {
   gap: 0.22rem;
   padding: 0.48rem 0.42rem 0.42rem;
   border-radius: 0.72rem;
-  border: 1px solid rgba(129, 180, 255, 0.18);
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--live-card-segment-border);
+  background: var(--live-card-segment-bg);
+  box-shadow: var(--live-card-segment-shadow);
   text-align: center;
 }
 
@@ -589,7 +626,7 @@ h6 {
   font-size: 1.32em;
   font-weight: 800;
   line-height: 1;
-  color: #f7fbff;
+  color: var(--live-card-number);
 }
 
 .stat-counter-major .stat-counter-number {
@@ -602,13 +639,13 @@ h6 {
   letter-spacing: 0.13em;
   font-weight: 700;
   text-transform: uppercase;
-  color: rgba(205, 223, 255, 0.74);
+  color: var(--live-card-unit);
 }
 
 .stat-counter-unit-major {
   margin-bottom: 0.25rem;
   font-size: 0.64em;
-  color: rgba(233, 240, 255, 0.82);
+  color: var(--live-card-major-unit);
 }
 
 .stat-counter-segment .stat-counter-number {
@@ -626,6 +663,12 @@ h6 {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-family: "Space Mono", monospace;
+}
+
+.stat-badge-live .stat-label {
+  color: var(--live-card-label);
+  position: relative;
+  z-index: 1;
 }
 
 .card {
@@ -1243,6 +1286,25 @@ tbody tr:last-child th {
   --status-muted-bg: rgba(76, 99, 137, 0.24);
   --status-muted-border: rgba(194, 206, 225, 0.34);
   --status-muted-ink: #d8e2f5;
+  --live-card-border: rgba(100, 170, 255, 0.42);
+  --live-card-bg:
+    radial-gradient(circle at top right, rgba(108, 162, 255, 0.18), transparent 40%),
+    linear-gradient(180deg, rgba(13, 31, 68, 0.92), rgba(9, 21, 48, 0.96));
+  --live-card-shadow:
+    0 16px 28px rgba(5, 11, 28, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --live-card-sheen: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 38%);
+  --live-card-kicker: rgba(216, 230, 255, 0.78);
+  --live-card-number: #f7fbff;
+  --live-card-unit: rgba(205, 223, 255, 0.74);
+  --live-card-major-unit: rgba(233, 240, 255, 0.82);
+  --live-card-segment-border: rgba(129, 180, 255, 0.18);
+  --live-card-segment-bg: rgba(255, 255, 255, 0.045);
+  --live-card-segment-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --live-card-label: rgba(225, 236, 255, 0.76);
+  --hero-badge-bg: var(--hero-media-bg);
+  --hero-badge-caption-bg: rgba(7, 18, 44, 0.68);
+  --hero-badge-caption-ink: #b1c3e2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1312,6 +1374,25 @@ tbody tr:last-child th {
     --status-muted-bg: rgba(76, 99, 137, 0.24);
     --status-muted-border: rgba(194, 206, 225, 0.34);
     --status-muted-ink: #d8e2f5;
+    --live-card-border: rgba(100, 170, 255, 0.42);
+    --live-card-bg:
+      radial-gradient(circle at top right, rgba(108, 162, 255, 0.18), transparent 40%),
+      linear-gradient(180deg, rgba(13, 31, 68, 0.92), rgba(9, 21, 48, 0.96));
+    --live-card-shadow:
+      0 16px 28px rgba(5, 11, 28, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    --live-card-sheen: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 38%);
+    --live-card-kicker: rgba(216, 230, 255, 0.78);
+    --live-card-number: #f7fbff;
+    --live-card-unit: rgba(205, 223, 255, 0.74);
+    --live-card-major-unit: rgba(233, 240, 255, 0.82);
+    --live-card-segment-border: rgba(129, 180, 255, 0.18);
+    --live-card-segment-bg: rgba(255, 255, 255, 0.045);
+    --live-card-segment-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --live-card-label: rgba(225, 236, 255, 0.76);
+    --hero-badge-bg: var(--hero-media-bg);
+    --hero-badge-caption-bg: rgba(7, 18, 44, 0.68);
+    --hero-badge-caption-ink: #b1c3e2;
   }
 }
 
