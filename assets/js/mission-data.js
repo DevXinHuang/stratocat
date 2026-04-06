@@ -25,9 +25,9 @@
         power: "0.72 W avg / 1.1 W peak",
         comms: "WSPR only",
         antenna: "Quarter-wave wire whip",
-        runtime: "~6 hours (battery)",
+        runtime: "~6 hours observed",
         maxAltitude: "12.46 km / 40,879 ft",
-        failureMode: "Battery voltage sag during cold soak"
+        failureMode: "Cold-soak thermal limits"
       },
       missionOverview: [
         "Launch objective: prove end-to-end telemetry and recovery process with minimum payload complexity.",
@@ -36,7 +36,7 @@
       ],
       architecture: [
         "Single-board tracker with lightweight MCU and low duty-cycle beaconing.",
-        "Simple battery power path with no active thermal regulation.",
+        "Simple power path with no active thermal regulation.",
         "Manual preflight checklist and handheld Yagi for recovery support."
       ],
       groundStation: [
@@ -45,7 +45,7 @@
         "Created post-flight CSV archive for altitude and timing analysis."
       ],
       powerAndThermal: [
-        "Lithium primary cell performed well at launch but dropped rapidly at high altitude temperatures.",
+        "Power system performance dropped rapidly at high altitude temperatures.",
         "Insulation mass was intentionally minimal to stay under weight target.",
         "Voltage logs showed low-temperature effects were the top limiting factor."
       ],
