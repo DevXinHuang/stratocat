@@ -688,16 +688,31 @@ h6 {
   background: var(--surface-soft);
 }
 
-.patch-wrap img {
+.patch-frame {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.9rem, 1.6vw, 1.2rem);
+  background:
+    var(
+      --hero-badge-bg,
+      radial-gradient(circle at 50% 16%, rgba(102, 149, 221, 0.16) 0%, rgba(102, 149, 221, 0) 34%),
+      linear-gradient(180deg, #fbfdff 0%, #edf3ff 100%)
+    );
+}
+
+.patch-frame img {
   width: 100%;
-  max-height: 210px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 
 .patch-wrap figcaption {
   font-size: 0.78rem;
   padding: 0.62rem 0.82rem;
   border-top: 1px solid var(--line);
+  background: var(--hero-badge-caption-bg, rgba(248, 251, 255, 0.94));
+  color: var(--hero-badge-caption-ink, #486489);
 }
 
 .metric-grid {

@@ -151,7 +151,9 @@
         </div>
 
         <figure class="patch-wrap">
-          <img src="${mission.patchImage}" alt="${mission.patchAlt}" loading="lazy" />
+          <div class="patch-frame">
+            <img src="${mission.patchImage}" alt="${mission.patchAlt}" loading="lazy" />
+          </div>
           <figcaption>Mission badge image from <code>/pictures</code></figcaption>
         </figure>
 
