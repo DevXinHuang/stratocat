@@ -166,7 +166,7 @@
       patchImage: "pictures/stratocat02.png",
       patchAlt: "Mission 2 campaign patch",
       intro:
-        "Mission 2 launched four of the five planned balloons on March 22, 2026. At 8:48 local time (15:48 UTC) on April 4, 2026, near 19.48 N, 108.46 W, the lead Stratocat balloon re-established transmission after completing a full global trajectory and confirmed one full circumnavigation of Earth.",
+        "Mission 2 launched four of the five planned balloons on March 22, 2026. At 8:48 local time (15:48 UTC) on April 4, 2026, near 19.48 N, 108.46 W, the lead Stratocat balloon re-established transmission after completing a full global trajectory and confirming one full circumnavigation of Earth. The campaign remains active while Mission 3 counts down.",
       trackerUrl: "tracking.html",
       trackerLabel: "Open live Mission 2 tracking",
       durationHours: null,
@@ -200,13 +200,13 @@
       groundStation: [
         "Launch-day operators used pre-staged Traquito dashboards for all active band and channel combinations.",
         "First signals were confirmed across 12m, 15m, and 20m during the launch campaign.",
-        "The tracking page now archives the four dashboard links for replay and review.",
+        "The tracking page keeps the four dashboard links available for live follow and replay review.",
         "At 15:48 UTC on April 4, 2026, transmission was re-established near 19.48 N, 108.46 W, confirming one completed orbit."
       ],
       powerAndThermal: [
         "Thermal and endurance analysis is still being compiled from the active Mission 2 telemetry.",
-        "The system continues to perform well as the live track advances beyond its first completed orbit.",
-        "Detailed altitude, runtime, and power summaries will be added after the flight concludes."
+        "The first-orbit milestone remains the headline performance marker captured so far in this campaign.",
+        "Detailed altitude, runtime, and power summaries will continue to be updated while the flight remains active."
       ],
       opsChecklist: [
         "Five balloons were prepared for release during the third launch campaign.",
@@ -219,7 +219,7 @@
         "At least one balloon was heard on every target band: 12m, 15m, and 20m.",
         "At 8:48 local time (15:48 UTC) on April 4, 2026, the lead balloon re-established transmission near 19.48 N, 108.46 W.",
         "The mission has now completed one full circumnavigation of Earth.",
-        "Four tracking dashboards are published while the live flight continues."
+        "Four tracking dashboards remain published while the live flight continues."
       ],
       lessons: [
         "Multi-balloon operations need a clear go or no-go check for lift before release.",
@@ -227,10 +227,10 @@
         "Launch-day summaries should immediately include direct links for every active balloon."
       ],
       roadmap: [
-        "Continue publishing live mission updates as the Mission 2 flight continues beyond its first full orbit.",
-        "Publish the full post-flight analysis after the Mission 2 flight concludes.",
+        "Continue publishing live Mission 2 updates while the balloon remains in flight.",
         "Retry the balloon that did not rise during the initial release.",
-        "Use third-launch data to define the next campaign."
+        "Use third-launch data to finalize Mission 3 readiness.",
+        "Launch Mission 3 on April 25, 2026 at 10:00 AM Arizona MST."
       ],
       gallery: [
         {
@@ -243,13 +243,13 @@
   ];
 
   const schedule = {
-    status: "inprogress",
-    nextLaunchIso: null,
-    nextLaunchLabel: "Sunday, March 22, 2026",
+    status: "scheduled",
+    nextLaunchIso: "2026-04-25T10:00:00-07:00",
+    nextLaunchLabel: "Saturday, April 25, 2026 at 10:00 AM",
     timezoneLabel: "Arizona MST",
-    launchChipLabel: "Mission 2",
-    launchChipValue: "Live",
-    launchChipHref: "tracking.html"
+    launchChipLabel: "Mission 3",
+    launchChipValue: "Countdown",
+    launchChipHref: "countdown.html"
   };
 
   window.StratocatData = {

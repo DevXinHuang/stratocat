@@ -24,7 +24,7 @@
       hoursEl.textContent = "00";
       minsEl.textContent = "00";
       secsEl.textContent = "00";
-      stateEl.textContent = "Latest launch is complete. Update this page when the next campaign is scheduled.";
+      stateEl.textContent = "Mission 3 scheduling details are being finalized. Check back soon for the live countdown.";
       return;
     }
 
@@ -39,7 +39,7 @@
         hoursEl.textContent = "00";
         minsEl.textContent = "00";
         secsEl.textContent = "00";
-        stateEl.textContent = "Launch window is open or complete. Update this page with live status.";
+        stateEl.textContent = "Mission 3 launch window is open. Switch this page to live status when tracking begins.";
         return;
       }
 
@@ -52,7 +52,7 @@
       hoursEl.textContent = format(hours);
       minsEl.textContent = format(mins);
       secsEl.textContent = format(secs);
-      stateEl.textContent = "Launch window is counting down.";
+      stateEl.textContent = "Mission 3 launch window is counting down.";
     }
 
     tick();

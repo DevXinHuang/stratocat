@@ -80,7 +80,7 @@
       return mission.durationHours * 60 * 60 * 1000;
     }
 
-    if (!mission.durationStartIso) {
+    if (mission.status !== "inprogress" || !mission.durationStartIso) {
       return null;
     }
 
@@ -342,12 +342,23 @@
 
   function renderScheduleSummary() {
     const schedule = data.schedule;
-    if (!schedule) return;
+    const latestMission = [...data.missions]
+      .filter((mission) => mission.status !== "scheduled")
+      .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))[0];
 
-    const labelTargets = document.querySelectorAll("[data-next-launch-label]");
-    labelTargets.forEach((target) => {
-      target.textContent = `${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
-    });
+    if (schedule) {
+      const nextLaunchTargets = document.querySelectorAll("[data-next-launch-label]");
+      nextLaunchTargets.forEach((target) => {
+        target.textContent = `${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+      });
+    }
+
+    if (latestMission) {
+      const latestLaunchTargets = document.querySelectorAll("[data-latest-launch-label]");
+      latestLaunchTargets.forEach((target) => {
+        target.textContent = latestMission.dateLabel;
+      });
+    }
   }
 
   function renderUnitSensitiveViews() {

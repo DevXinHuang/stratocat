@@ -4,12 +4,12 @@
   const THEME_EVENT = "stratocat:theme-changed";
   const UNIT_EVENT = "stratocat:units-changed";
   const DEFAULT_SCHEDULE = {
-    status: "completed",
-    nextLaunchIso: null,
-    nextLaunchLabel: "Sunday, March 22, 2026",
+    status: "scheduled",
+    nextLaunchIso: "2026-04-25T10:00:00-07:00",
+    nextLaunchLabel: "Saturday, April 25, 2026 at 10:00 AM",
     timezoneLabel: "Arizona MST",
-    launchChipLabel: "Launch 3",
-    launchChipValue: "Complete",
+    launchChipLabel: "Mission 3",
+    launchChipValue: "Countdown",
     launchChipHref: "countdown.html"
   };
 

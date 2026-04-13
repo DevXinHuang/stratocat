@@ -3,9 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K7UAZ Stratocat | Third Launch Recap</title>
-    <meta name="description" content="Third launch recap for the K7UAZ Stratocat project, including balloon count and tracking links." />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260406-theme-fix-2" />
+    <title>K7UAZ Stratocat | Mission 3 Countdown</title>
+    <meta
+      name="description"
+      content="Mission 3 countdown for the K7UAZ Stratocat project, with the April 25, 2026 launch window and live Mission 2 tracking links."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260412-mission3-elapsed-fix" />
   </head>
   <body>
     <header class="site-header">
@@ -27,9 +30,9 @@
     <main>
       <section class="page-hero">
         <div class="layout reveal">
-          <p class="eyebrow">Launch Recap</p>
-          <h1>Third launch campaign</h1>
-          <p>Completed on <span data-next-launch-label>Sunday, March 22, 2026</span>.</p>
+          <p class="eyebrow">Mission 3</p>
+          <h1>Mission 3 launch countdown</h1>
+          <p>Target launch: <span data-next-launch-label>Saturday, April 25, 2026 at 10:00 AM (Arizona MST)</span>.</p>
         </div>
       </section>
 
@@ -37,49 +40,47 @@
         <div class="layout card reveal" style="padding: 1rem 1.1rem">
           <div class="countdown-grid">
             <div class="countdown-cell">
-              <strong>4</strong>
-              <span>Balloons launched</span>
+              <strong id="countdown-days">00</strong>
+              <span>Days</span>
             </div>
             <div class="countdown-cell">
-              <strong>5</strong>
-              <span>Balloons planned</span>
+              <strong id="countdown-hours">00</strong>
+              <span>Hours</span>
             </div>
             <div class="countdown-cell">
-              <strong>3</strong>
-              <span>Bands heard</span>
+              <strong id="countdown-minutes">00</strong>
+              <span>Minutes</span>
             </div>
             <div class="countdown-cell">
-              <strong>4</strong>
-              <span>Dashboards live</span>
+              <strong id="countdown-seconds">00</strong>
+              <span>Seconds</span>
             </div>
           </div>
-          <p class="inline-note">
-            We launched 4 of the 5 planned balloons. One balloon did not rise and will be retried later. Signals were
-            received on 12m, 15m, and 20m.
-          </p>
+          <p id="countdown-state" class="inline-note">Mission 3 launch window is counting down.</p>
         </div>
       </section>
 
       <section class="section-tight">
         <div class="layout split reveal">
           <article class="card">
-            <h3>Launch Summary</h3>
+            <h3>Launch Window</h3>
             <ul>
-              <li>Third launch campaign completed on March 22, 2026.</li>
-              <li>Four balloons launched successfully under callsign K7UAZ.</li>
-              <li>At least one balloon was heard on every target band.</li>
-              <li>Full post-flight analysis is still being compiled.</li>
+              <li>Mission 3 is scheduled for April 25, 2026 at 10:00 AM Arizona MST.</li>
+              <li>The homepage and nav launch chip now point to this countdown again.</li>
+              <li>Mission 2 is still flying while launch-day prep continues.</li>
+              <li>Update this page to live status once tracking links are ready.</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Tracking Links</h3>
+            <h3>Live Tracking and Reports</h3>
             <ul>
-              <li>Use the Live / Tracking page for all four embedded dashboards.</li>
-              <li>Review band and channel combinations for each launched balloon.</li>
-              <li>Use the archived dashboards for replay and post-flight review.</li>
+              <li>Use the Mission 2 tracking page to follow the active dashboards.</li>
+              <li>Flight reports still hold the Design A, B, and C mission history.</li>
+              <li>Swap this page back to live launch coverage after Mission 3 lifts off.</li>
             </ul>
             <div class="button-row">
-              <a class="button" href="tracking.html">Open Live Tracking</a>
+              <a class="button" href="tracking.html">Open Mission 2 Live Tracking</a>
+              <a class="button button-ghost" href="flights.html">View Flight Reports</a>
             </div>
           </article>
         </div>
@@ -88,12 +89,13 @@
 
     <footer class="footer">
       <div class="layout">
-        <p><strong>K7UAZ Stratocat</strong> third launch recap.</p>
+        <p><strong>K7UAZ Stratocat</strong> Mission 3 countdown.</p>
       </div>
     </footer>
 
-    <script src="assets/js/site.js?v=20260406-live"></script>
-    <script src="assets/js/mission-data.js?v=20260406-live"></script>
-    <script src="assets/js/components.js?v=20260406-live"></script>
+    <script src="assets/js/site.js?v=20260412-mission3-elapsed-fix"></script>
+    <script src="assets/js/mission-data.js?v=20260412-mission3-elapsed-fix"></script>
+    <script src="assets/js/countdown.js?v=20260412-mission3-elapsed-fix"></script>
+    <script src="assets/js/components.js?v=20260412-mission3-elapsed-fix"></script>
   </body>
 </html>
