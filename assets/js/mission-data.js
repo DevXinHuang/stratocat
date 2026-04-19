@@ -252,9 +252,34 @@
     launchChipHref: "countdown.html"
   };
 
+  const coverage = {
+    band: "12m",
+    channel: 39,
+    callsign: "K7UAZ",
+    dtGte: "2026-03-22",
+    sourceLabel: "12m / Channel 39 / callsign K7UAZ / since March 22, 2026",
+    dashboardUrl: "https://traquito.github.io/search/spots/dashboard/?band=12m&channel=39&callsign=K7UAZ&dtGte=2026-03-22",
+    filtering: {
+      maxLowerBoundSpeedKmh: 320,
+      maxRejoinDistanceKm: 1200,
+      maxGlitchSegmentMinutes: 360,
+      maxGlitchSegmentPoints: 24,
+      bounceReturnMinDistanceKm: 180,
+      manualExclusions: [
+        {
+          startUtc: "2026-03-24 16:08:00",
+          endUtc: "2026-03-24 18:48:00",
+          grids: ["PN35"],
+          reason: "Suspected jamming cluster near China while the surrounding Mission 2 track remained over Mexico."
+        }
+      ]
+    }
+  };
+
   window.StratocatData = {
     projectName: "K7UAZ Stratocat",
     missions,
-    schedule
+    schedule,
+    coverage
   };
 })();

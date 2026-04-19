@@ -8,7 +8,7 @@
       name="description"
       content="K7UAZ Stratocat project sponsored by ARRL, with student-led flight engineering, live tracking, and mission reports."
     />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260412-mission3-elapsed-fix" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260419-world-coverage" />
   </head>
   <body>
     <header class="site-header">
@@ -118,6 +118,113 @@
         </div>
       </section>
 
+      <section class="section" id="world-coverage">
+        <div class="layout reveal">
+          <p class="eyebrow">World Coverage</p>
+          <h2 class="section-title">Mission 2 footprint, one region at a time.</h2>
+          <p class="section-intro">
+            This live map groups the 12m Channel 39 balloon track into world grid regions. Darker tiles mean the
+            balloon spent more 10-minute tracking windows over that part of the world.
+          </p>
+
+          <div class="coverage-grid">
+            <article class="card coverage-card">
+              <div class="coverage-card-head">
+                <div>
+                  <strong>Live Mission 2 Coverage</strong>
+                  <p>
+                    Pulling regular-position grid data directly from the WSPR database for
+                    <span data-coverage-source-label>12m / Channel 39 / K7UAZ</span>.
+                  </p>
+                </div>
+                <span class="status-pill status-inprogress">Live</span>
+              </div>
+
+              <div class="coverage-map-stage">
+                <div class="coverage-status" data-coverage-status>Loading live coverage...</div>
+                <div
+                  class="coverage-map"
+                  data-coverage-map
+                  role="img"
+                  aria-label="Live world map of Mission 2 visited regions"
+                ></div>
+                <div class="coverage-tooltip" data-coverage-tooltip hidden></div>
+              </div>
+
+              <div class="coverage-legend">
+                <div class="coverage-legend-copy">
+                  <strong>Heat key</strong>
+                  <p>Lower intensity means fewer windows heard there. Higher intensity means the balloon returned or lingered longer.</p>
+                </div>
+                <div class="coverage-legend-scale-wrap" aria-hidden="true">
+                  <div class="coverage-legend-scale"></div>
+                  <div class="coverage-legend-labels">
+                    <span>Lower</span>
+                    <span>Higher</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <div class="coverage-stack">
+              <article class="card coverage-side-card">
+                <strong>Coverage Stats</strong>
+                <div class="coverage-stat-grid">
+                  <div class="coverage-stat-tile">
+                    <span class="coverage-stat-label">Visited Regions</span>
+                    <span class="coverage-stat-value" data-coverage-stat="regions">--</span>
+                    <span class="coverage-stat-note">Distinct 4-character grids</span>
+                  </div>
+                  <div class="coverage-stat-tile">
+                    <span class="coverage-stat-label">Tracked Windows</span>
+                    <span class="coverage-stat-value" data-coverage-stat="windows">--</span>
+                    <span class="coverage-stat-note">Unique 10-minute position reports</span>
+                  </div>
+                  <div class="coverage-stat-tile">
+                    <span class="coverage-stat-label">Latest Grid</span>
+                    <span class="coverage-stat-value" data-coverage-stat="latest-grid">--</span>
+                    <span class="coverage-stat-note" data-coverage-latest-note>Waiting for the latest spot...</span>
+                  </div>
+                  <div class="coverage-stat-tile">
+                    <span class="coverage-stat-label">Data Span</span>
+                    <span class="coverage-stat-value" data-coverage-stat="span">--</span>
+                    <span class="coverage-stat-note">Mission 2 live archive window</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card coverage-side-card">
+                <strong>Most Visited Regions</strong>
+                <p>These are the grid sectors where the balloon has spent the most tracked windows so far.</p>
+                <ul class="coverage-region-list" data-coverage-top-regions></ul>
+              </article>
+
+              <article class="card coverage-side-card">
+                <strong>Data Source</strong>
+                <div class="coverage-note">
+                  <p>
+                    This version uses the balloon's regular WSPR grid square, which means it works on GitHub Pages
+                    with no custom server. It now filters impossible jump glitches and supports manual exclusion
+                    windows, and we can still upgrade later to the finer Traquito <code>BtLat</code> /
+                    <code>BtLng</code> export for tighter tracks.
+                  </p>
+                </div>
+                <div class="button-row">
+                  <a class="button" href="tracking.html">Open Mission 2 Tracking</a>
+                  <a
+                    class="button button-ghost"
+                    href="https://traquito.github.io/search/spots/dashboard/?band=12m&channel=39&callsign=K7UAZ&dtGte=2026-03-22"
+                    target="_blank"
+                    rel="noreferrer"
+                    >Open Traquito Dashboard</a
+                  >
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="flight-reports">
         <div class="layout reveal">
           <p class="eyebrow">Featured Flights</p>
@@ -137,8 +244,11 @@
       </div>
     </footer>
 
-    <script src="assets/js/site.js?v=20260412-mission3-elapsed-fix"></script>
-    <script src="assets/js/mission-data.js?v=20260412-mission3-elapsed-fix"></script>
-    <script src="assets/js/components.js?v=20260412-mission3-elapsed-fix"></script>
+    <script src="assets/js/site.js?v=20260419-world-coverage"></script>
+    <script src="assets/js/mission-data.js?v=20260419-world-coverage"></script>
+    <script src="assets/js/components.js?v=20260419-world-coverage"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+    <script src="assets/js/world-coverage.js?v=20260419-world-coverage"></script>
   </body>
 </html>
