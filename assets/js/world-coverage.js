@@ -22,6 +22,9 @@
     sourceLabelEl.textContent = coverageConfig.sourceLabel;
   }
 
+  const TRAQUITO_WSPR_SEARCH_URL =
+    coverageConfig.traquitoModuleUrl || "https://traquito.github.io/search/spots/dashboard/js/WsprSearch.js";
+
   const BAND_TO_ENUM = new Map([
     ["2190m", -1],
     ["630m", 0],
@@ -67,12 +70,18 @@
   let worldTopology = null;
   let coverageSummary = null;
   let resizeObserver = null;
+  const displayBinConfig = {
+    latStep: 1,
+    lngStep: 1,
+    ...(coverageConfig.displayBin || {})
+  };
   const coverageFiltering = {
     maxLowerBoundSpeedKmh: 320,
     maxRejoinDistanceKm: 1200,
     maxGlitchSegmentMinutes: 360,
     maxGlitchSegmentPoints: 24,
     bounceReturnMinDistanceKm: 180,
+    bounceRejoinDistanceKm: 180,
     manualExclusions: [],
     ...(coverageConfig.filtering || {})
   };
@@ -85,6 +94,19 @@
 
   function formatInt(value) {
     return Number(value).toLocaleString("en-US", { maximumFractionDigits: 0 });
+  }
+
+  function toNumber(value) {
+    if (value === null || value === undefined) {
+      return null;
+    }
+
+    if (typeof value === "string" && value.trim() === "") {
+      return null;
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
   }
 
   function formatMonthDay(timeStr) {
@@ -116,6 +138,30 @@
     const isoLike = String(timeStr).replace(" ", "T") + "Z";
     const parsed = new Date(isoLike);
     return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  function normalizeQueryDateTime(value, edge) {
+    if (!value) return "";
+
+    const trimmed = String(value).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      return edge === "end" ? `${trimmed} 23:59:59` : `${trimmed} 00:00:00`;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(trimmed)) {
+      return `${trimmed}:00`;
+    }
+
+    return trimmed;
+  }
+
+  function formatCoordinate(value, positiveSuffix, negativeSuffix, digits = 1) {
+    const suffix = value >= 0 ? positiveSuffix : negativeSuffix;
+    return `${Math.abs(value).toFixed(digits)}°${suffix}`;
+  }
+
+  function formatLatLngLabel(lat, lng, digits = 1) {
+    return `${formatCoordinate(lat, "N", "S", digits)}, ${formatCoordinate(lng, "E", "W", digits)}`;
   }
 
   function rotateRight(values, count) {
@@ -191,13 +237,15 @@
   function buildCoverageQuery(config) {
     const bandEnum = BAND_TO_ENUM.get(config.band);
     const channelDetails = getChannelDetails(config.band, config.channel);
+    const timeStart = normalizeQueryDateTime(config.dtGte, "start");
+    const timeEnd = normalizeQueryDateTime(config.dtLte, "end");
 
     if (bandEnum === undefined || !channelDetails) {
       throw new Error("Unable to resolve band or channel settings for the live map.");
     }
 
     const filters = [
-      `time >= '${escapeSqlLiteral(config.dtGte)}'`,
+      `time >= '${escapeSqlLiteral(timeStart)}'`,
       `band = ${bandEnum}`,
       `tx_sign = '${escapeSqlLiteral(config.callsign)}'`,
       "length(tx_loc) = 4",
@@ -205,6 +253,10 @@
       `frequency >= ${Math.floor(channelDetails.frequencyLow)}`,
       `frequency < ${Math.ceil(channelDetails.frequencyHigh)}`
     ];
+
+    if (timeEnd) {
+      filters.splice(1, 0, `time <= '${escapeSqlLiteral(timeEnd)}'`);
+    }
 
     return `
 select
@@ -259,6 +311,14 @@ FORMAT JSONCompact
     };
   }
 
+  function sortRowsChronologically(rows) {
+    return [...rows].sort((left, right) => {
+      const leftMs = parseUtcDateTime(left.time)?.getTime() ?? 0;
+      const rightMs = parseUtcDateTime(right.time)?.getTime() ?? 0;
+      return leftMs - rightMs || String(left.displayGrid || left.region4 || "").localeCompare(String(right.displayGrid || right.region4 || ""));
+    });
+  }
+
   function haversineDistanceKm(lat1, lng1, lat2, lng2) {
     const earthRadiusKm = 6371;
     const phi1 = (lat1 * Math.PI) / 180;
@@ -275,12 +335,12 @@ FORMAT JSONCompact
   function centerDistanceKm(leftRow, rightRow) {
     if (!leftRow || !rightRow) return 0;
 
-    return haversineDistanceKm(leftRow.centerLat, leftRow.centerLng, rightRow.centerLat, rightRow.centerLng);
+    return haversineDistanceKm(leftRow.lat, leftRow.lng, rightRow.lat, rightRow.lng);
   }
 
   function lowerBoundDistanceKm(leftRow, rightRow) {
-    const estimatedCellUncertaintyKm = 250;
-    return Math.max(0, centerDistanceKm(leftRow, rightRow) - estimatedCellUncertaintyKm);
+    const estimatedUncertaintyKm = (leftRow?.uncertaintyKm || 0) + (rightRow?.uncertaintyKm || 0);
+    return Math.max(0, centerDistanceKm(leftRow, rightRow) - estimatedUncertaintyKm);
   }
 
   function minutesBetween(leftTime, rightTime) {
@@ -299,23 +359,78 @@ FORMAT JSONCompact
     return lowerBoundDistanceKm(leftRow, rightRow) / (minutes / 60);
   }
 
-  function normalizeCoverageRows(rows) {
-    return rows
-      .map((row) => {
-        const grid4 = typeof row.grid4 === "string" ? row.grid4.toUpperCase() : "";
-        const bounds = decodeGrid4Bounds(grid4);
+  function normalizeLegacyCoverageRows(rows) {
+    return sortRowsChronologically(
+      rows
+        .map((row) => {
+          const region4 = typeof row.grid4 === "string" ? row.grid4.toUpperCase() : "";
+          const bounds = decodeGrid4Bounds(region4);
 
-        if (!bounds) {
-          return null;
+          if (!bounds) {
+            return null;
+          }
+
+          return {
+            time: row.time,
+            region4,
+            preciseGrid: null,
+            displayGrid: region4,
+            lat: bounds.centerLat,
+            lng: bounds.centerLng,
+            uncertaintyKm: 125,
+            precisionSource: "legacy-grid"
+          };
+        })
+        .filter(Boolean)
+    );
+  }
+
+  function normalizeTraquitoCoverageRows(td) {
+    if (!td || typeof td.Length !== "function") {
+      return [];
+    }
+
+    const rows = [];
+
+    for (let rowIndex = 0; rowIndex < td.Length(); rowIndex += 1) {
+      const time = td.Get(rowIndex, "DateTimeUtc");
+      const region4 = typeof td.Get(rowIndex, "RegGrid") === "string" ? td.Get(rowIndex, "RegGrid").toUpperCase() : "";
+      const preciseGrid = typeof td.Get(rowIndex, "BtGrid6") === "string" ? td.Get(rowIndex, "BtGrid6").toUpperCase() : null;
+      const btGpsValid = Number(td.Get(rowIndex, "BtGpsValid")) === 1;
+      const btLat = toNumber(td.Get(rowIndex, "BtLat"));
+      const btLng = toNumber(td.Get(rowIndex, "BtLng"));
+      let lat = btGpsValid && btLat !== null && btLng !== null ? btLat : toNumber(td.Get(rowIndex, "Lat"));
+      let lng = btGpsValid && btLat !== null && btLng !== null ? btLng : toNumber(td.Get(rowIndex, "Lng"));
+      let uncertaintyKm = btGpsValid && btLat !== null && btLng !== null ? 8 : 125;
+      let precisionSource = btGpsValid && btLat !== null && btLng !== null ? "traquito-bt" : "traquito-resolved";
+
+      if ((lat === null || lng === null) && region4) {
+        const bounds = decodeGrid4Bounds(region4);
+        if (bounds) {
+          lat = bounds.centerLat;
+          lng = bounds.centerLng;
+          precisionSource = "reg-fallback";
+          uncertaintyKm = 125;
         }
+      }
 
-        return {
-          time: row.time,
-          grid4,
-          ...bounds
-        };
-      })
-      .filter(Boolean);
+      if (!time || lat === null || lng === null) {
+        continue;
+      }
+
+      rows.push({
+        time: String(time),
+        region4,
+        preciseGrid,
+        displayGrid: preciseGrid || region4 || null,
+        lat,
+        lng,
+        uncertaintyKm,
+        precisionSource
+      });
+    }
+
+    return sortRowsChronologically(rows);
   }
 
   function applyManualExclusions(rows) {
@@ -331,11 +446,15 @@ FORMAT JSONCompact
     const removedRows = [];
 
     rows.forEach((row) => {
+      const rowMs = parseUtcDateTime(row.time)?.getTime() ?? null;
       const exclusion = exclusions.find((rule) => {
         const grids = Array.isArray(rule.grids) ? rule.grids.map((grid) => String(grid).toUpperCase()) : [];
-        const afterStart = !rule.startUtc || row.time >= rule.startUtc;
-        const beforeEnd = !rule.endUtc || row.time <= rule.endUtc;
-        const gridAllowed = !grids.length || grids.includes(row.grid4);
+        const startMs = rule.startUtc ? parseUtcDateTime(rule.startUtc)?.getTime() ?? null : null;
+        const endMs = rule.endUtc ? parseUtcDateTime(rule.endUtc)?.getTime() ?? null : null;
+        const afterStart = startMs === null || (rowMs !== null && rowMs >= startMs);
+        const beforeEnd = endMs === null || (rowMs !== null && rowMs <= endMs);
+        const rowGridCandidates = [row.region4, row.displayGrid, row.preciseGrid].filter(Boolean);
+        const gridAllowed = !grids.length || rowGridCandidates.some((candidate) => grids.includes(candidate));
         return afterStart && beforeEnd && gridAllowed;
       });
 
@@ -372,13 +491,13 @@ FORMAT JSONCompact
 
       const previous = rows[index - 1];
       const next = rows[index + 1];
-      const bouncesBackToSameGrid = previous.grid4 === next.grid4 && previous.grid4 !== row.grid4;
-      const centerJumpKm = centerDistanceKm(previous, row);
+      const rejoinDistanceKm = centerDistanceKm(previous, next);
+      const centerJumpKm = Math.max(centerDistanceKm(previous, row), centerDistanceKm(row, next));
       const outSpeed = lowerBoundSpeedKmh(previous, row);
       const returnSpeed = lowerBoundSpeedKmh(row, next);
 
       if (
-        bouncesBackToSameGrid &&
+        rejoinDistanceKm <= coverageFiltering.bounceRejoinDistanceKm &&
         centerJumpKm >= coverageFiltering.bounceReturnMinDistanceKm &&
         outSpeed > coverageFiltering.maxLowerBoundSpeedKmh &&
         returnSpeed > coverageFiltering.maxLowerBoundSpeedKmh
@@ -473,10 +592,9 @@ FORMAT JSONCompact
   }
 
   function filterCoverageRows(rows) {
-    const normalizedRows = normalizeCoverageRows(rows);
     const removedRows = [];
 
-    const manual = applyManualExclusions(normalizedRows);
+    const manual = applyManualExclusions(rows);
     removedRows.push(...manual.removedRows);
 
     const bounced = removeBounceRows(manual.keptRows);
@@ -491,50 +609,112 @@ FORMAT JSONCompact
     };
   }
 
+  function quantizeCoordinate(value, step) {
+    return Math.floor(value / step) * step;
+  }
+
+  function buildDisplayCell(row) {
+    const latStep = Math.max(0.25, Number(displayBinConfig.latStep) || 1);
+    const lngStep = Math.max(0.25, Number(displayBinConfig.lngStep) || 1);
+    const south = Math.max(-90, quantizeCoordinate(row.lat, latStep));
+    const west = Math.max(-180, quantizeCoordinate(row.lng, lngStep));
+    const north = Math.min(90, south + latStep);
+    const east = Math.min(180, west + lngStep);
+
+    return {
+      key: `${south.toFixed(3)}:${west.toFixed(3)}`,
+      south,
+      north,
+      west,
+      east,
+      centerLat: south + (north - south) / 2,
+      centerLng: west + (east - west) / 2
+    };
+  }
+
   function aggregateCoverage(rows) {
-    const cellsByGrid = new Map();
+    const cellsByKey = new Map();
+    const gridsByCode = new Map();
     let firstRecord = null;
     let latestRecord = null;
 
     rows.forEach((row) => {
-      const { grid4 } = row;
+      const cell = buildDisplayCell(row);
+      const latestGrid = row.displayGrid || row.region4 || "Unknown";
 
       if (!firstRecord) {
-        firstRecord = { time: row.time, grid4 };
+        firstRecord = {
+          time: row.time,
+          displayGrid: latestGrid,
+          region4: row.region4,
+          cellKey: cell.key
+        };
       }
 
-      latestRecord = { time: row.time, grid4, ...row };
+      latestRecord = {
+        time: row.time,
+        displayGrid: latestGrid,
+        region4: row.region4,
+        preciseGrid: row.preciseGrid,
+        lat: row.lat,
+        lng: row.lng,
+        cellKey: cell.key
+      };
 
-      const existing = cellsByGrid.get(grid4) || {
-        grid4,
+      const existing = cellsByKey.get(cell.key) || {
+        ...cell,
         count: 0,
         firstTime: row.time,
         lastTime: row.time,
-        ...row
+        latestGrid,
+        latestRegion: row.region4 || null
       };
 
       existing.count += 1;
       existing.lastTime = row.time;
-      cellsByGrid.set(grid4, existing);
+      existing.latestGrid = latestGrid;
+      existing.latestRegion = row.region4 || existing.latestRegion;
+      cellsByKey.set(cell.key, existing);
+
+      const visitedGridCode = row.displayGrid || row.region4 || null;
+      if (visitedGridCode) {
+        const grid = gridsByCode.get(visitedGridCode) || {
+          grid: visitedGridCode,
+          count: 0,
+          lastTime: row.time,
+          precisionSource: row.preciseGrid ? "precise" : "region"
+        };
+
+        grid.count += 1;
+        grid.lastTime = row.time;
+        if (row.preciseGrid) {
+          grid.precisionSource = "precise";
+        }
+        gridsByCode.set(visitedGridCode, grid);
+      }
     });
 
-    const cells = Array.from(cellsByGrid.values()).sort((left, right) => right.count - left.count || left.grid4.localeCompare(right.grid4));
+    const cells = Array.from(cellsByKey.values()).sort((left, right) => right.count - left.count || left.key.localeCompare(right.key));
+    const topGrids = Array.from(gridsByCode.values())
+      .sort((left, right) => right.count - left.count || left.grid.localeCompare(right.grid))
+      .slice(0, 6);
 
     return {
       windowCount: rows.length,
-      uniqueRegions: cells.length,
+      uniqueCells: cells.length,
+      uniqueGrids: gridsByCode.size,
       firstRecord,
       latestRecord,
       cells,
-      topRegions: cells.slice(0, 6),
+      topGrids,
       maxCount: cells.length ? cells[0].count : 0
     };
   }
 
   function updateStats(summary) {
-    if (statEls.regions) statEls.regions.textContent = formatInt(summary.uniqueRegions);
+    if (statEls.regions) statEls.regions.textContent = formatInt(summary.uniqueCells);
     if (statEls.windows) statEls.windows.textContent = formatInt(summary.windowCount);
-    if (statEls.latestGrid) statEls.latestGrid.textContent = summary.latestRecord ? summary.latestRecord.grid4 : "None";
+    if (statEls.latestGrid) statEls.latestGrid.textContent = summary.latestRecord ? summary.latestRecord.displayGrid : "None";
 
     if (statEls.span) {
       statEls.span.textContent =
@@ -545,15 +725,15 @@ FORMAT JSONCompact
 
     if (latestNoteEl) {
       latestNoteEl.textContent = summary.latestRecord
-        ? `Last heard ${formatUtcStamp(summary.latestRecord.time)}`
-        : "Waiting for the latest spot...";
+        ? `Last resolved ${formatUtcStamp(summary.latestRecord.time)}`
+        : "Waiting for the latest resolved spot...";
     }
 
     if (topRegionsEl) {
-      topRegionsEl.innerHTML = summary.topRegions
-        .map((cell) => {
-          const label = `${cell.grid4} (${formatMonthDay(cell.lastTime)})`;
-          const count = `${formatInt(cell.count)} window${cell.count === 1 ? "" : "s"}`;
+      topRegionsEl.innerHTML = summary.topGrids
+        .map((grid) => {
+          const label = `${grid.grid} (${formatMonthDay(grid.lastTime)})`;
+          const count = `${formatInt(grid.count)} window${grid.count === 1 ? "" : "s"}`;
           return `
             <li>
               <span class="coverage-region-label">${label}</span>
@@ -585,8 +765,9 @@ FORMAT JSONCompact
     tooltipEl.style.left = `${event.clientX - rect.left}px`;
     tooltipEl.style.top = `${event.clientY - rect.top}px`;
     tooltipEl.innerHTML = `
-      <strong>${cell.grid4}</strong>
-      <span>${formatInt(cell.count)} tracked window${cell.count === 1 ? "" : "s"}</span>
+      <strong>${cell.latestGrid || cell.latestRegion || "Coverage cell"}</strong>
+      <span>${formatLatLngLabel(cell.centerLat, cell.centerLng)}</span>
+      <span>${formatInt(cell.count)} tracked window${cell.count === 1 ? "" : "s"} in this cell</span>
       <span>Last heard ${formatUtcStamp(cell.lastTime)}</span>
     `;
   }
@@ -602,7 +783,7 @@ FORMAT JSONCompact
     }
 
     if (!coverageSummary.cells.length) {
-      showEmptyMap("No live grid squares were returned for this mission window yet.");
+      showEmptyMap("No live coverage cells were returned for this mission window yet.");
       return;
     }
 
@@ -649,15 +830,15 @@ FORMAT JSONCompact
       .selectAll("path")
       .data(coverageSummary.cells)
       .join("path")
-      .attr("class", (cell) => `coverage-cell${coverageSummary.latestRecord && cell.grid4 === coverageSummary.latestRecord.grid4 ? " coverage-cell-latest" : ""}`)
+      .attr("class", (cell) => `coverage-cell${coverageSummary.latestRecord && cell.key === coverageSummary.latestRecord.cellKey ? " coverage-cell-latest" : ""}`)
       .attr("d", (cell) =>
         path({
           type: "Polygon",
           coordinates: [[
             [cell.west, cell.south],
-            [cell.east, cell.south],
-            [cell.east, cell.north],
             [cell.west, cell.north],
+            [cell.east, cell.north],
+            [cell.east, cell.south],
             [cell.west, cell.south]
           ]]
         })
@@ -676,15 +857,17 @@ FORMAT JSONCompact
       .on("mouseleave", hideTooltip);
   }
 
-  async function fetchCoverageSummary() {
+  async function loadWorldTopology() {
     const response = await fetch("assets/data/countries-110m.json");
 
     if (!response.ok) {
       throw new Error("Unable to load the world map asset.");
     }
 
-    worldTopology = await response.json();
+    return response.json();
+  }
 
+  async function fetchLegacyCoverageRows() {
     const query = buildCoverageQuery(coverageConfig);
     const dataUrl = new URL("https://db1.wspr.live/");
     dataUrl.searchParams.set("query", query);
@@ -695,10 +878,71 @@ FORMAT JSONCompact
     }
 
     const payload = await dataResponse.json();
-    const filtered = filterCoverageRows(rowsFromJsonCompact(payload));
+    return normalizeLegacyCoverageRows(rowsFromJsonCompact(payload));
+  }
+
+  async function fetchTraquitoCoverageRows() {
+    const module = await import(TRAQUITO_WSPR_SEARCH_URL);
+    if (!module || typeof module.WsprSearch !== "function") {
+      throw new Error("Traquito coverage module did not expose WsprSearch.");
+    }
+
+    const search = new module.WsprSearch();
+    if (typeof search.SetInfo === "function") {
+      search.SetInfo(false);
+    }
+    if (typeof search.SetDebug === "function") {
+      search.SetDebug(false);
+    }
+    if (search.q && typeof search.q === "object") {
+      search.q.autoConvertTimeToUtc = false;
+    }
+
+    await search.Search(
+      coverageConfig.band,
+      String(coverageConfig.channel),
+      coverageConfig.callsign,
+      normalizeQueryDateTime(coverageConfig.dtGte, "start"),
+      normalizeQueryDateTime(coverageConfig.dtLte, "end")
+    );
+
+    return normalizeTraquitoCoverageRows(search.GetDataTable());
+  }
+
+  function setCoverageSourceLabel(sourceMode) {
+    if (!sourceLabelEl) {
+      return;
+    }
+
+    if (sourceMode === "legacy") {
+      sourceLabelEl.textContent = `Fallback WSPR grid feed / ${coverageConfig.band} / Channel ${coverageConfig.channel} / ${coverageConfig.callsign}`;
+      return;
+    }
+
+    sourceLabelEl.textContent = coverageConfig.sourceLabel || `${coverageConfig.band} / Channel ${coverageConfig.channel} / ${coverageConfig.callsign}`;
+  }
+
+  async function fetchCoverageSummary() {
+    worldTopology = await loadWorldTopology();
+
+    let rows = [];
+    let sourceMode = "traquito";
+
+    try {
+      rows = await fetchTraquitoCoverageRows();
+    } catch (error) {
+      console.warn("Traquito coverage import failed, falling back to direct WSPR grid coverage.", error);
+      rows = await fetchLegacyCoverageRows();
+      sourceMode = "legacy";
+    }
+
+    setCoverageSourceLabel(sourceMode);
+
+    const filtered = filterCoverageRows(rows);
     coverageSummary = {
       ...aggregateCoverage(filtered.keptRows),
-      filteredPointCount: filtered.removedRows.length
+      filteredPointCount: filtered.removedRows.length,
+      sourceMode
     };
   }
 
@@ -723,17 +967,18 @@ FORMAT JSONCompact
   }
 
   async function init() {
-    setStatus("Loading live coverage...");
+    setStatus("Resolving live coverage...");
 
     try {
       await fetchCoverageSummary();
       updateStats(coverageSummary);
       renderMap();
       setupResizeHandling();
+      const sourcePrefix = coverageSummary.sourceMode === "legacy" ? "Fallback WSPR data" : "Traquito live data";
       const filteredSuffix = coverageSummary.filteredPointCount
         ? ` | ${formatInt(coverageSummary.filteredPointCount)} glitches filtered`
         : "";
-      setStatus(`Live data: ${formatInt(coverageSummary.windowCount)} windows${filteredSuffix}`);
+      setStatus(`${sourcePrefix}: ${formatInt(coverageSummary.windowCount)} windows${filteredSuffix}`);
     } catch (error) {
       console.error(error);
       setStatus("Coverage unavailable");

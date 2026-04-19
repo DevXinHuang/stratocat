@@ -257,14 +257,20 @@
     channel: 39,
     callsign: "K7UAZ",
     dtGte: "2026-03-22",
-    sourceLabel: "12m / Channel 39 / callsign K7UAZ / since March 22, 2026",
+    sourceLabel: "Traquito-resolved 12m / Channel 39 / K7UAZ / since March 22, 2026",
+    traquitoModuleUrl: "https://traquito.github.io/search/spots/dashboard/js/WsprSearch.js",
     dashboardUrl: "https://traquito.github.io/search/spots/dashboard/?band=12m&channel=39&callsign=K7UAZ&dtGte=2026-03-22",
+    displayBin: {
+      latStep: 1,
+      lngStep: 1
+    },
     filtering: {
       maxLowerBoundSpeedKmh: 320,
       maxRejoinDistanceKm: 1200,
       maxGlitchSegmentMinutes: 360,
       maxGlitchSegmentPoints: 24,
       bounceReturnMinDistanceKm: 180,
+      bounceRejoinDistanceKm: 180,
       manualExclusions: [
         {
           startUtc: "2026-03-24 16:08:00",

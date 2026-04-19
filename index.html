@@ -8,7 +8,7 @@
       name="description"
       content="K7UAZ Stratocat project sponsored by ARRL, with student-led flight engineering, live tracking, and mission reports."
     />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260419-world-coverage" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260419-traquito-coverage" />
   </head>
   <body>
     <header class="site-header">
@@ -123,9 +123,9 @@
           <p class="eyebrow">World Coverage</p>
           <h2 class="section-title">Mission 2 footprint, one region at a time.</h2>
           <p class="section-intro">
-            This live map groups the 12m Channel 39 balloon track into world grid regions. Because the tracker is
-            solar-powered, heard windows are intermittent, and darker tiles mean we heard more transmissions from that
-            part of the world.
+            This live map uses Traquito's decoded Mission 2 positions, then bins them into visible world coverage cells.
+            Because the tracker is solar-powered, heard windows are intermittent, and darker cells mean we heard more
+            transmissions from that part of the world.
           </p>
 
           <div class="coverage-grid">
@@ -134,7 +134,7 @@
                 <div>
                   <strong>Live Mission 2 Coverage</strong>
                   <p>
-                    Pulling regular-position grid data directly from the WSPR database for
+                    Pulling Traquito-resolved live position data in the browser for
                     <span data-coverage-source-label>12m / Channel 39 / K7UAZ</span>.
                   </p>
                 </div>
@@ -172,9 +172,9 @@
                 <strong>Coverage Stats</strong>
                 <div class="coverage-stat-grid">
                   <div class="coverage-stat-tile">
-                    <span class="coverage-stat-label">Visited Regions</span>
+                    <span class="coverage-stat-label">Visited Cells</span>
                     <span class="coverage-stat-value" data-coverage-stat="regions">--</span>
-                    <span class="coverage-stat-note">Distinct 4-character grids</span>
+                    <span class="coverage-stat-note">Distinct 1 degree coverage cells from resolved positions</span>
                   </div>
                   <div class="coverage-stat-tile">
                     <span class="coverage-stat-label">Tracked Windows</span>
@@ -184,7 +184,7 @@
                   <div class="coverage-stat-tile">
                     <span class="coverage-stat-label">Latest Grid</span>
                     <span class="coverage-stat-value" data-coverage-stat="latest-grid">--</span>
-                    <span class="coverage-stat-note" data-coverage-latest-note>Waiting for the latest spot...</span>
+                    <span class="coverage-stat-note" data-coverage-latest-note>Waiting for the latest resolved spot...</span>
                   </div>
                   <div class="coverage-stat-tile">
                     <span class="coverage-stat-label">Data Span</span>
@@ -195,8 +195,8 @@
               </article>
 
               <article class="card coverage-side-card">
-                <strong>Most Visited Regions</strong>
-                <p>These are the grid sectors where the balloon has been heard most often so far.</p>
+                <strong>Most Visited Grids</strong>
+                <p>These are the most frequently heard resolved grids so far, using 6-character Traquito positions when available.</p>
                 <ul class="coverage-region-list" data-coverage-top-regions></ul>
               </article>
 
@@ -204,11 +204,12 @@
                 <strong>Data Source</strong>
                 <div class="coverage-note">
                   <p>
-                    This version uses the balloon's regular WSPR grid square, which means it works on GitHub Pages
-                    with no custom server. Because the payload is solar-powered, silent gaps are normal and the map
-                    does not assume constant dots. It only filters impossible jump glitches, supports manual exclusion
-                    windows, and can still be upgraded later to the finer Traquito <code>BtLat</code> /
-                    <code>BtLng</code> export for tighter tracks.
+                    This version imports Traquito's browser-side search and decoder pipeline directly from GitHub Pages,
+                    so it can resolve the custom <code>BtGrid6</code> / <code>BtLat</code> / <code>BtLng</code> track
+                    without needing a backend server. The homepage then bins those resolved positions into 1 degree map
+                    cells, keeps solar-related silent gaps as normal behavior, and only removes impossible jump glitches
+                    or manually excluded jamming windows. If Traquito is unavailable, the map falls back to the regular
+                    WSPR grid feed.
                   </p>
                 </div>
                 <div class="button-row">
@@ -246,11 +247,11 @@
       </div>
     </footer>
 
-    <script src="assets/js/site.js?v=20260419-world-coverage"></script>
-    <script src="assets/js/mission-data.js?v=20260419-world-coverage"></script>
-    <script src="assets/js/components.js?v=20260419-world-coverage"></script>
+    <script src="assets/js/site.js?v=20260419-traquito-coverage"></script>
+    <script src="assets/js/mission-data.js?v=20260419-traquito-coverage"></script>
+    <script src="assets/js/components.js?v=20260419-traquito-coverage"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
-    <script src="assets/js/world-coverage.js?v=20260419-world-coverage"></script>
+    <script src="assets/js/world-coverage.js?v=20260419-traquito-coverage"></script>
   </body>
 </html>
