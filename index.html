@@ -123,8 +123,9 @@
           <p class="eyebrow">World Coverage</p>
           <h2 class="section-title">Mission 2 footprint, one region at a time.</h2>
           <p class="section-intro">
-            This live map groups the 12m Channel 39 balloon track into world grid regions. Darker tiles mean the
-            balloon spent more 10-minute tracking windows over that part of the world.
+            This live map groups the 12m Channel 39 balloon track into world grid regions. Because the tracker is
+            solar-powered, heard windows are intermittent, and darker tiles mean we heard more transmissions from that
+            part of the world.
           </p>
 
           <div class="coverage-grid">
@@ -178,7 +179,7 @@
                   <div class="coverage-stat-tile">
                     <span class="coverage-stat-label">Tracked Windows</span>
                     <span class="coverage-stat-value" data-coverage-stat="windows">--</span>
-                    <span class="coverage-stat-note">Unique 10-minute position reports</span>
+                    <span class="coverage-stat-note">Distinct windows where the balloon was heard</span>
                   </div>
                   <div class="coverage-stat-tile">
                     <span class="coverage-stat-label">Latest Grid</span>
@@ -195,7 +196,7 @@
 
               <article class="card coverage-side-card">
                 <strong>Most Visited Regions</strong>
-                <p>These are the grid sectors where the balloon has spent the most tracked windows so far.</p>
+                <p>These are the grid sectors where the balloon has been heard most often so far.</p>
                 <ul class="coverage-region-list" data-coverage-top-regions></ul>
               </article>
 
@@ -204,8 +205,9 @@
                 <div class="coverage-note">
                   <p>
                     This version uses the balloon's regular WSPR grid square, which means it works on GitHub Pages
-                    with no custom server. It now filters impossible jump glitches and supports manual exclusion
-                    windows, and we can still upgrade later to the finer Traquito <code>BtLat</code> /
+                    with no custom server. Because the payload is solar-powered, silent gaps are normal and the map
+                    does not assume constant dots. It only filters impossible jump glitches, supports manual exclusion
+                    windows, and can still be upgraded later to the finer Traquito <code>BtLat</code> /
                     <code>BtLng</code> export for tighter tracks.
                   </p>
                 </div>

@@ -445,6 +445,9 @@ FORMAT JSONCompact
       const shortSegment =
         currentSegment.length <= coverageFiltering.maxGlitchSegmentPoints &&
         durationMinutes <= coverageFiltering.maxGlitchSegmentMinutes;
+      // The balloon is solar-powered, so long silent gaps are expected.
+      // Only remove a segment when both the entry and exit would still require
+      // impossible lower-bound speeds and the surrounding track rejoins cleanly.
       const entrySpeed = lowerBoundSpeedKmh(previousLast, currentFirst);
       const exitSpeed = lowerBoundSpeedKmh(currentLast, nextFirst);
       const rejoinDistanceKm = centerDistanceKm(previousLast, nextFirst);
