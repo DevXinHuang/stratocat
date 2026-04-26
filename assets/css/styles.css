@@ -62,6 +62,9 @@
   --status-inprogress-bg: #e9f4ff;
   --status-inprogress-border: #9dc5ef;
   --status-inprogress-ink: #225f9c;
+  --status-tracking-bg: #e8f8ec;
+  --status-tracking-border: #93ddb0;
+  --status-tracking-ink: #1b7f40;
   --status-alert-bg: #fde9ec;
   --status-alert-border: #e8a1ad;
   --status-alert-ink: #8e1f33;
@@ -838,6 +841,12 @@ h6 {
   color: var(--status-inprogress-ink);
 }
 
+.status-tracking {
+  background: var(--status-tracking-bg);
+  border-color: var(--status-tracking-border);
+  color: var(--status-tracking-ink);
+}
+
 .status-alert {
   background: var(--status-alert-bg);
   border-color: var(--status-alert-border);
@@ -1582,6 +1591,9 @@ tbody tr:last-child th {
   --status-inprogress-bg: rgba(34, 95, 156, 0.24);
   --status-inprogress-border: rgba(157, 197, 239, 0.42);
   --status-inprogress-ink: #abd1ff;
+  --status-tracking-bg: rgba(22, 121, 63, 0.24);
+  --status-tracking-border: rgba(98, 214, 144, 0.42);
+  --status-tracking-ink: #98efb8;
   --status-alert-bg: rgba(142, 31, 51, 0.24);
   --status-alert-border: rgba(232, 161, 173, 0.44);
   --status-alert-ink: #ffc0cb;
@@ -1687,6 +1699,9 @@ tbody tr:last-child th {
     --status-inprogress-bg: rgba(34, 95, 156, 0.24);
     --status-inprogress-border: rgba(157, 197, 239, 0.42);
     --status-inprogress-ink: #abd1ff;
+    --status-tracking-bg: rgba(22, 121, 63, 0.24);
+    --status-tracking-border: rgba(98, 214, 144, 0.42);
+    --status-tracking-ink: #98efb8;
     --status-alert-bg: rgba(142, 31, 51, 0.24);
     --status-alert-border: rgba(232, 161, 173, 0.44);
     --status-alert-ink: #ffc0cb;
