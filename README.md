@@ -15,7 +15,7 @@ This version uses a more modern UI design across the full site.
 
 - `flights.html` - Flight cards + design comparison table
 - `tracking.html` - Embedded live and historical tracking views
-- `countdown.html` - Mission countdown page
+- `countdown.html` - Mission 3 status page
 - `sponsors.html` - Sponsor and funding section
 - `report.html?mission=design-a|design-b|design-c` - Reusable flight report page
 

@@ -166,7 +166,7 @@
       patchImage: "pictures/stratocat02.png",
       patchAlt: "Mission 2 campaign patch",
       intro:
-        "Mission 2 launched four of the five planned balloons on March 22, 2026. At 8:48 local time (15:48 UTC) on April 4, 2026, near 19.48 N, 108.46 W, the lead Stratocat balloon re-established transmission after completing a full global trajectory and confirming one full circumnavigation of Earth. The campaign remains active while Mission 3 counts down.",
+        "Mission 2 launched four of the five planned balloons on March 22, 2026. At 8:48 local time (15:48 UTC) on April 4, 2026, near 19.48 N, 108.46 W, the lead Stratocat balloon re-established transmission after completing a full global trajectory and confirming one full circumnavigation of Earth. The campaign remains active while Mission 3 has launched successfully and moved into live tracking.",
       trackerUrl: "tracking.html",
       trackerLabel: "Open live Mission 2 tracking",
       durationHours: null,
@@ -227,10 +227,10 @@
         "Launch-day summaries should immediately include direct links for every active balloon."
       ],
       roadmap: [
-        "Continue publishing live Mission 2 updates while the balloon remains in flight.",
+        "Continue publishing live Mission 2 updates while Lazarus remains in flight.",
         "Retry the balloon that did not rise during the initial release.",
-        "Use third-launch data to finalize Mission 3 readiness.",
-        "Launch Mission 3 on April 25, 2026 at 10:00 AM Arizona MST."
+        "Mission 3 launched successfully on April 25, 2026 and is now in live tracking.",
+        "Track John, Paul, George, and Ringo on the Mission 3 tracking page while Lazarus continues from Mission 2."
       ],
       gallery: [
         {
@@ -243,13 +243,13 @@
   ];
 
   const schedule = {
-    status: "scheduled",
+    status: "inprogress",
     nextLaunchIso: "2026-04-25T10:00:00-07:00",
     nextLaunchLabel: "Saturday, April 25, 2026 at 10:00 AM",
     timezoneLabel: "Arizona MST",
     launchChipLabel: "Mission 3",
-    launchChipValue: "Countdown",
-    launchChipHref: "countdown.html"
+    launchChipValue: "Tracking",
+    launchChipHref: "tracking.html"
   };
 
   const coverage = {

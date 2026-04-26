@@ -361,6 +361,114 @@
     }
   }
 
+  function formatLaunchWindowLabel(schedule) {
+    if (!schedule) {
+      return "the published launch time";
+    }
+
+    if (schedule.nextLaunchLabel && schedule.timezoneLabel) {
+      return `${schedule.nextLaunchLabel} (${schedule.timezoneLabel})`;
+    }
+
+    return schedule.nextLaunchLabel || "the published launch time";
+  }
+
+  function getLaunchWindowPhase(schedule, now = Date.now()) {
+    if (!schedule) {
+      return "unknown";
+    }
+
+    if (schedule.status === "completed") {
+      return "completed";
+    }
+
+    if (schedule.status === "inprogress") {
+      return "inprogress";
+    }
+
+    const targetMs = Date.parse(schedule.nextLaunchIso || "");
+    if (!Number.isNaN(targetMs) && targetMs <= now) {
+      return "window-open";
+    }
+
+    return "scheduled";
+  }
+
+  function renderLaunchWindowCopy() {
+    const schedule = data.schedule;
+    const launchWindowLabel = formatLaunchWindowLabel(schedule);
+    const phase = getLaunchWindowPhase(schedule);
+
+    const homePrimaryTargets = document.querySelectorAll("[data-launch-window-home-primary]");
+    const homeSecondaryTargets = document.querySelectorAll("[data-launch-window-home-secondary]");
+    const trackingTargets = document.querySelectorAll("[data-launch-window-tracking-summary]");
+    const timelineTargets = document.querySelectorAll("[data-launch-window-timeline-summary]");
+    const countdownTargets = document.querySelectorAll("[data-launch-window-countdown-summary]");
+
+    const copy = {
+      homePrimary:
+        phase === "window-open"
+          ? `Mission 3 launched on ${launchWindowLabel}. Live tracking is now coming online for the new flight group.`
+          : phase === "inprogress"
+            ? `Mission 3 launched successfully on ${launchWindowLabel}. Live tracking is now active for John, Paul, George, and Ringo.`
+            : phase === "completed"
+              ? "Mission 3 launch coverage has moved out of countdown mode. Use the mission pages for the latest archived status."
+              : `Mission 3 is scheduled for ${launchWindowLabel}. The homepage is pointed at the Mission 3 status page so the next launch window stays front and center.`,
+      homeSecondary:
+        phase === "window-open"
+          ? "Mission 2 Lazarus is still flying, so the live mission clock remains at the top of the page while Mission 3 tracking settles in."
+          : phase === "inprogress"
+            ? "Mission 2 Lazarus is still flying, so the live mission clock remains at the top of the page while both missions stay active."
+            : phase === "completed"
+              ? "Mission 2 is still flying while Mission 3 recap materials and archived updates are collected."
+              : "Mission 2 is still flying, so the live mission clock remains at the top of the page while launch prep continues for the next campaign.",
+      tracking:
+        phase === "window-open"
+          ? `Mission 2 remains active while Mission 3 has just launched from ${launchWindowLabel}.`
+          : phase === "inprogress"
+            ? `Mission 3 launched successfully on ${launchWindowLabel} and is now in live tracking.`
+            : phase === "completed"
+              ? "Mission 2 remains active while Mission 3 post-launch materials are compiled."
+              : `Mission 2 remains active while Mission 3 counts down to ${launchWindowLabel}.`,
+      timeline:
+        phase === "window-open"
+          ? `Mission 3 launched on ${launchWindowLabel} and live tracking is now coming online.`
+          : phase === "inprogress"
+            ? `Mission 3 launched successfully on ${launchWindowLabel} and is now in live tracking.`
+            : phase === "completed"
+              ? "Mission 3 launch updates have moved into the mission archive."
+              : `Mission 3 is scheduled for ${launchWindowLabel}.`,
+      countdown:
+        phase === "window-open"
+          ? `Mission 3 launched on ${launchWindowLabel} and live tracking is now coming online.`
+          : phase === "inprogress"
+            ? `Mission 3 launched successfully on ${launchWindowLabel} and is now in live tracking.`
+            : phase === "completed"
+              ? "Mission 3 launch coverage has been archived."
+              : `Mission 3 is scheduled for ${launchWindowLabel}.`
+    };
+
+    homePrimaryTargets.forEach((target) => {
+      target.textContent = copy.homePrimary;
+    });
+
+    homeSecondaryTargets.forEach((target) => {
+      target.textContent = copy.homeSecondary;
+    });
+
+    trackingTargets.forEach((target) => {
+      target.textContent = copy.tracking;
+    });
+
+    timelineTargets.forEach((target) => {
+      target.textContent = copy.timeline;
+    });
+
+    countdownTargets.forEach((target) => {
+      target.textContent = copy.countdown;
+    });
+  }
+
   function renderUnitSensitiveViews() {
     renderMissionCards("[data-mission-cards='home']", () => true);
     renderMissionCards("[data-mission-cards='flights']", () => true);
@@ -372,6 +480,7 @@
     renderUnitSensitiveViews();
     renderComparisonTable("#comparison-table-body");
     renderScheduleSummary();
+    renderLaunchWindowCopy();
   });
 
   window.addEventListener("stratocat:units-changed", () => {

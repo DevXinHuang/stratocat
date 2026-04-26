@@ -19,6 +19,15 @@
       return;
     }
 
+    if (scheduleStatus === "inprogress") {
+      daysEl.textContent = "00";
+      hoursEl.textContent = "00";
+      minsEl.textContent = "00";
+      secsEl.textContent = "00";
+      stateEl.textContent = "Mission 3 launched successfully and live tracking is active.";
+      return;
+    }
+
     if (!targetIso || scheduleStatus === "completed") {
       daysEl.textContent = "00";
       hoursEl.textContent = "00";
@@ -39,7 +48,7 @@
         hoursEl.textContent = "00";
         minsEl.textContent = "00";
         secsEl.textContent = "00";
-        stateEl.textContent = "Mission 3 launch window is open. Switch this page to live status when tracking begins.";
+        stateEl.textContent = "Mission 3 launched successfully and live tracking is coming online.";
         return;
       }
 
